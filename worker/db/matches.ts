@@ -16,9 +16,11 @@ async function fetchMatches(competitionId: number) {
 export async function updateMatchesFromApi(competitionId: number) {
   const matches = await fetchMatches(competitionId);
 
-  const createMatch = (m: IMatch) => db.matches.create(m.id.toString(), m);
+  const createMatch = (m: IMatch) => db.matches.create(m.id!.toString(), m);
 
   matches.forEach(async (m) => {
+    if (!m.id) return
+
     const matchExists = await db.matches.has(m.id.toString());
     if (!matchExists) return createMatch(m);
 

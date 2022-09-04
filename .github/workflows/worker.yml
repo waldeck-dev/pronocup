@@ -1,8 +1,9 @@
 name: CI for worker service
 
 on:
-  paths:
-    - "worker/**"
+  push:
+    paths:
+      - "worker/**"
 
 jobs:
   test-worker:

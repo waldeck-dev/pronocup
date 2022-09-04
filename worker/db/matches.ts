@@ -40,3 +40,11 @@ export async function updateMatchesFromApi(competitionId: number) {
 
   return updatedMatches;
 }
+
+export function toDate(dateString: string) {
+  const date = new Date(dateString);
+  return date instanceof Date && !isNaN(date.getTime())
+    ? { date }
+    : { error: new Error(`${dateString} is not a valid Date`) };
+}
+

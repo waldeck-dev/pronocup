@@ -16,18 +16,27 @@ async function fetchMatches(competitionId: number) {
 export async function updateMatchesFromApi(competitionId: number) {
   const matches = await fetchMatches(competitionId);
 
-  const createMatch = (m: IMatch) => db.matches.create(m.id!.toString(), m);
+  const createMatch = async (m: IMatch) =>
+    await db.matches.create(m.id!.toString(), m);
 
-  matches.forEach(async (m) => {
-    if (!m.id) return
+  const updatedMatches: IMatch[] = [];
+  for (const m of matches) {
+    if (!m.id) continue;
 
-    const matchExists = await db.matches.has(m.id.toString());
-    if (!matchExists) return createMatch(m);
-
-    const match = await db.matches.get(m.id.toString()) as IMatch;
-    if (match.lastUpdated !== m.lastUpdated) {
-      await db.matches.delete(m.id.toString());
-      createMatch(m);
+    const matchId = m.id.toString();
+    const matchExists = await db.matches.has(matchId);
+    if (!matchExists) {
+      await createMatch(m);
+      updatedMatches.push(m);
     }
-  });
+
+    const match = await db.matches.get(matchId) as IMatch;
+    if (match.lastUpdated !== m.lastUpdated) {
+      await db.matches.delete(matchId);
+      createMatch(m);
+      updatedMatches.push(m);
+    }
+  }
+
+  return updatedMatches;
 }

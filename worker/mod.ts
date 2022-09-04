@@ -1,5 +1,5 @@
 // Loading .env
-import { config } from "./deps.ts"
+import { config } from "./deps.ts";
 config({
   export: true,
   path: "./.env/.env",

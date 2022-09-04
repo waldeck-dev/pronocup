@@ -2,7 +2,8 @@
 
 ## Data provider
 
-- Football-data.org: [https://www.football-data.org/](https://www.football-data.org/)
+- Football-data.org:
+  [https://www.football-data.org/](https://www.football-data.org/)
 
 ## Local development
 
@@ -14,7 +15,6 @@ cp ./.env/.env.example ./.env/.env
 
 # Edit .env file with actual values
 nano ./.env/.env
-
 ```
 
 Running worker

@@ -25,17 +25,16 @@ export async function updateMatchesFromApi(competitionId: number) {
 
     const matchId = m.id.toString();
     const matchExists = await db.matches.has(matchId);
-    if (!matchExists) {
-      await createMatch(m);
-      updatedMatches.push(m);
+
+    if (matchExists) {
+      const match = await db.matches.get(matchId) as IMatch;
+      if (match.lastUpdated !== m.lastUpdated) {
+        await db.matches.delete(matchId);
+      }
     }
 
-    const match = await db.matches.get(matchId) as IMatch;
-    if (match.lastUpdated !== m.lastUpdated) {
-      await db.matches.delete(matchId);
-      createMatch(m);
-      updatedMatches.push(m);
-    }
+    await createMatch(m);
+    updatedMatches.push(m);
   }
 
   return updatedMatches;
@@ -47,4 +46,3 @@ export function toDate(dateString: string) {
     ? { date }
     : { error: new Error(`${dateString} is not a valid Date`) };
 }
-

@@ -25,7 +25,6 @@ module.exports = createCoreController('api::group.group', ({ strapi }) => ({
    * Delete UserGroup object upon Group.delete()
    */
   async delete(ctx) {
-    console.log('BEFORE', ctx.params);
     const group = +ctx.params.id;
 
     const entities = await strapi.entityService.findMany('api::user-group.user-group', {

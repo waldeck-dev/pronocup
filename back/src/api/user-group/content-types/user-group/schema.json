@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_groups",
+  "info": {
+    "singularName": "user-group",
+    "pluralName": "user-groups",
+    "displayName": "UserGroup",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::group.group"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

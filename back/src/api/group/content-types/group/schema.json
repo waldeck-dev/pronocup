@@ -16,6 +16,11 @@
       "type": "string",
       "required": true,
       "maxLength": 30
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

@@ -5,17 +5,26 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const { getAuthenticatedUser } = require('../../../utils');
 
 module.exports = createCoreController('api::group.group', ({ strapi }) => ({
   /**
-   * Create UserGroup object upon Group.create()
+   * Create Group and add related owner and UserGroup object
    */
   async create(ctx) {
     const response = await super.create(ctx);
-    
     const group = response.data.id;
-    const data = { group, user: ctx.state.user.id, confirmed: true };
 
+    const user = await getAuthenticatedUser(ctx.state.user.id);
+
+    // Add current user as Group.owner
+    await strapi.entityService
+      .update('api::group.group', group, {
+        data: { owner: user.id }
+      });
+
+    // Create UserGroup relation
+    const data = { group, user: ctx.state.user.id, confirmed: true };
     await strapi.entityService.create('api::user-group.user-group', { data });
 
     return response;

@@ -13,12 +13,11 @@ module.exports = createCoreRouter('api::group.group', {
         {
           name: 'global::is-owner',
           config: {
-            owner: async ({ ctx, strapi }) => {
-              const entities = await strapi.entityService.findMany('api::user-group.user-group', {
-                filters:  { group: +ctx.params.id, user: ctx.state.user.id }
-              });
-
-              if (entities.length === 1) return ctx.state.user.id;
+            getObject: async ({ ctx, strapi }) => {
+              return await strapi.entityService
+                .findOne('api::group.group', ctx.params.id, {
+                  populate: { owner: true }
+                });
             }
           }
         }

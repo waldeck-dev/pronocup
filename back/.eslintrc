@@ -5,8 +5,10 @@
     "commonjs": true,
     "es6": true,
     "node": true,
-    "browser": false
+    "browser": false,
+    "jest/globals": true
   },
+  "plugins": ["jest"],
   "parserOptions": {
     "requireConfigFile": false,
     "ecmaFeatures": {

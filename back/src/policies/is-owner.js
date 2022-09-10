@@ -5,17 +5,17 @@
  */
 
 module.exports = async (policyContext, config, { strapi }) => {
-  const args = { ctx: policyContext, config, strapi };
-  
-  const obj = await config.getObject(args);
-  if (!obj) return;
 
-  const ownerField = config.field || 'owner';
-  let owner = config.owner || obj[ownerField].id;
-
-  if (typeof owner === 'function') {
-    owner = await owner(args);
+  if (typeof config.getObject !== 'function') {
+    throw new Error('This policy requires a `getObject` function to be set');
   }
 
+  const ownerField = config.field || 'owner';
+  
+  const obj = await config.getObject({ ctx: policyContext, config, strapi });
+  if (!obj) return;
+
+  const owner = obj[ownerField]?.id;
+  
   return policyContext.state.user.id === owner;
 };

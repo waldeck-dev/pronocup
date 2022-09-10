@@ -29,6 +29,19 @@ describe('Test global policy `is-owner`', () => {
     expect(owner2).toBeFalsy();
   });
 
+  test('is-owner negated', async () => {
+    const negatedConf = { ...fakeConfig, negate: true };
+
+    // IS owner
+    const owner = await isOwner(fakeContext, negatedConf, { strapi });
+    expect(owner).toBeFalsy();
+
+    // Is NOT owner
+    const fakeContext2 = { state: { user: { id: ownerId * -1 } } };
+    const owner2 = await isOwner(fakeContext2, negatedConf, { strapi });
+    expect(owner2).toBeTruthy();
+  });
+
   test('is-owner throws error on invalid config', async () => {
     const fakeConfig = [{}, { getObject: 'invalid type' }];
     for (const conf of fakeConfig) {

@@ -17,5 +17,7 @@ module.exports = async (policyContext, config, { strapi }) => {
 
   const owner = obj[ownerField]?.id;
   
-  return policyContext.state.user.id === owner;
+  const isOwner = policyContext.state.user.id === owner;
+
+  return config.negate ? !isOwner : isOwner;
 };

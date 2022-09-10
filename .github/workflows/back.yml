@@ -13,10 +13,6 @@ jobs:
       run:
         working-directory: ./back
 
-    strategy:
-        matrix:
-          node-version: [14.x, 16.x]
-
     env:
       HOST: 0.0.0.0
       PORT: 1337
@@ -29,10 +25,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
           cache: 'yarn'
           cache-dependency-path: "**/yarn.lock"
 

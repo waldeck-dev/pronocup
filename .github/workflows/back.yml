@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-  strategy:
-      matrix:
-        node-version: [14.x, 16.x]
+    strategy:
+        matrix:
+          node-version: [14.x, 16.x]
 
-  steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
-    - name: Run linter
-      run: yarn run lint
+      - name: Run linter
+        run: yarn run lint
 
-    - name: Run tests
-      run: yarn run test
+      - name: Run tests
+        run: yarn run test

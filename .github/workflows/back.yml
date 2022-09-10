@@ -1,0 +1,31 @@
+name: CI for back (strapi) service
+
+on:
+  push:
+    paths:
+      - "back/**"
+
+jobs:
+  test-back:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+  strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+
+    - name: Run linter
+      run: yarn run lint
+
+    - name: Run tests
+      run: yarn run test

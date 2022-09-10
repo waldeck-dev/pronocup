@@ -25,7 +25,9 @@ jobs:
           cache: 'yarn'
 
       - name: Run linter
+        working-directory: ./back
         run: yarn run lint
 
       - name: Run tests
+        working-directory: ./back
         run: yarn run test

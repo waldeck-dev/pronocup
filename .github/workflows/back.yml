@@ -20,9 +20,14 @@ jobs:
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
+        working-directory: ./back
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+
+      - name: Install dependencies
+        working-directory: ./back
+        run: yarn install
 
       - name: Run linter
         working-directory: ./back

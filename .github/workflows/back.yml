@@ -17,6 +17,14 @@ jobs:
         matrix:
           node-version: [14.x, 16.x]
 
+    env:
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: "TestPurposeOnly1,TestPurposeOnly2"
+      API_TOKEN_SALT: TestPurposeOnly
+      ADMIN_JWT_SECRET: TestPurposeOnly
+      JWT_SECRET: TestPurposeOnly
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

@@ -9,6 +9,9 @@ jobs:
   test-back:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./back
 
     strategy:
         matrix:
@@ -23,15 +26,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          cache-dependency-path: yarn.lock
 
       - name: Install dependencies
-        working-directory: ./back
         run: yarn install
 
       - name: Run linter
-        working-directory: ./back
         run: yarn run lint
 
       - name: Run tests
-        working-directory: ./back
         run: yarn run test

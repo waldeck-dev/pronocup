@@ -9,6 +9,48 @@ const { getAuthenticatedUser } = require('../../../utils');
 
 module.exports = createCoreController('api::group.group', ({ strapi }) => ({
   /**
+   * Retrieve a Group and related UserGroup object if member of group
+   */
+  async findOne(ctx) {
+    const group = await strapi.entityService
+      .findOne('api::group.group', ctx.params.id, {
+        populate: { owner: true }
+      });
+
+    if (!group) return null;
+
+    const groupData = JSON.parse(JSON.stringify(group));
+    delete groupData.owner;
+
+    const currentUserId = ctx.state.user.id;
+    const isOwner = currentUserId === group.owner.id;
+
+    const userGroups = await strapi.entityService
+      .findMany('api::user-group.user-group', {
+        filters: { group: ctx.params.id },
+        populate: { user: true }
+      });
+
+    const isConfirmedMember =
+      isOwner
+      || !!userGroups.find(
+        (ug) => ug.user.id === currentUserId && ug.confirmed
+      );
+
+    const newData = { id: group.id, attributes: { ...groupData }};
+    if (isConfirmedMember) {
+      newData.attributes = {
+        ...newData.attributes,
+        'user-groups': isOwner
+          ? userGroups
+          : userGroups.filter((ug) => ug.confirmed)
+      };
+    }
+
+    return newData;
+  },
+
+  /**
    * Create Group and add related owner and UserGroup object
    */
   async create(ctx) {

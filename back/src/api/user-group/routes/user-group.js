@@ -6,6 +6,11 @@
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
+const getUserGroup = async (id, { strapi }) => await strapi.entityService
+  .findOne('api::user-group.user-group', id, {
+    populate: { group: true, user: true }
+  });
+
 module.exports = createCoreRouter('api::user-group.user-group', {
   config: {
     /**
@@ -35,16 +40,28 @@ module.exports = createCoreRouter('api::user-group.user-group', {
           name: 'global::is-owner',
           config: {
             getObject: async ({ ctx, strapi }) => {
-              const userGroup = await strapi.entityService
-                .findOne('api::user-group.user-group', ctx.params.id, {
-                  populate: { group: true }
-                });
+              const userGroup = await getUserGroup(ctx.params.id, { strapi });
 
               return await strapi.entityService
                 .findOne('api::group.group', userGroup.group.id, {
                   populate: { owner: true }
                 });
             }
+          }
+        }
+      ]
+    },
+
+    /**
+     * DELETE: User cancels his join request
+     */
+    delete: {
+      policies: [
+        {
+          name: 'global::is-owner',
+          config: {
+            field: 'user.id',
+            getObject: async ({ ctx, strapi }) => await getUserGroup(ctx.params.id, { strapi })
           }
         }
       ]

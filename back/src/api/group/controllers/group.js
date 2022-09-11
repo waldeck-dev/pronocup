@@ -34,7 +34,7 @@ module.exports = createCoreController('api::group.group', ({ strapi }) => ({
     const isConfirmedMember =
       isOwner
       || !!userGroups.find(
-        (ug) => ug.user.id === currentUserId && ug.confirmed
+        (ug) => ug.user.id === currentUserId && ug.confirmed && !ug.blocked
       );
 
     const newData = { id: group.id, attributes: { ...groupData }};
@@ -43,7 +43,7 @@ module.exports = createCoreController('api::group.group', ({ strapi }) => ({
         ...newData.attributes,
         'user-groups': isOwner
           ? userGroups
-          : userGroups.filter((ug) => ug.confirmed)
+          : userGroups.filter((ug) => ug.confirmed && !ug.blocked)
       };
     }
 

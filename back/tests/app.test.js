@@ -31,4 +31,12 @@ describe('Test utils.js functions', () => {
     expect(authUser.id).toBe(user.id);
   });
 
+  test('extractData works properly', () => {
+    const fakePayload = {keepMe: 123, dontKeepMe: 456};
+    const newPayload = extractData(fakePayload, ['keepMe']);
+    expect(typeof newPayload).toBe('object');
+    expect(newPayload).toHaveProperty('keepMe');
+    expect(newPayload.keepMe).toBe(fakePayload.keepMe);
+  });
+
 });

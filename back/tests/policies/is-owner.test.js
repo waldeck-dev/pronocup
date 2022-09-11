@@ -42,6 +42,23 @@ describe('Test global policy `is-owner`', () => {
     expect(owner2).toBeTruthy();
   });
 
+  test('is-owner with custom field', async () => {
+    const fakeObj2 = { parent: { child: { id: ownerId } } };
+    const fakeConf2 = {
+      field: 'parent.child.id',
+      getObject: jest.fn(() => fakeObj2)
+    };
+
+    // IS owner
+    const owner = await isOwner(fakeContext, fakeConf2, { strapi });
+    expect(owner).toBeTruthy();
+
+    // Is NOT owner
+    const fakeContext2 = { state: { user: { id: ownerId * -1 } } };
+    const owner2 = await isOwner(fakeContext2, fakeConf2, { strapi });
+    expect(owner2).toBeFalsy();
+  });
+
   test('is-owner throws error on invalid config', async () => {
     const fakeConfig = [{}, { getObject: 'invalid type' }];
     for (const conf of fakeConfig) {

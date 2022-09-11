@@ -37,7 +37,7 @@ module.exports = createCoreController('api::group.group', ({ strapi }) => ({
     const group = +ctx.params.id;
 
     const entities = await strapi.entityService.findMany('api::user-group.user-group', {
-      filters: { user: ctx.state.user.id, group }
+      filters: { group }
     });
 
     const response = await super.delete(ctx);

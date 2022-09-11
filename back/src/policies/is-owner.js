@@ -10,12 +10,24 @@ module.exports = async (policyContext, config, { strapi }) => {
     throw new Error('This policy requires a `getObject` function to be set');
   }
 
-  const ownerField = config.field || 'owner';
+  let ownerField = 'owner';
+  if (typeof config.field === 'string') {
+    ownerField = config.field.includes('.')
+      ? config.field.split('.')
+      : config.field;
+  }
   
   const obj = await config.getObject({ ctx: policyContext, config, strapi });
   if (!obj) return;
 
-  const owner = obj[ownerField]?.id;
+  let owner;
+  if (Array.isArray(ownerField)) {
+    owner = ownerField.reduce((acc, f) => acc[f], obj);
+  } else {
+    owner = obj[ownerField]?.id;
+  }
   
-  return policyContext.state.user.id === owner;
+  const isOwner = policyContext.state.user.id === owner;
+
+  return config.negate ? !isOwner : isOwner;
 };

@@ -1,5 +1,6 @@
 const Strapi = require('@strapi/strapi');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 let instance;
 
@@ -30,4 +31,31 @@ async function cleanupStrapi() {
   await strapi.db.connection.destroy();
 }
 
-module.exports = { setupStrapi, cleanupStrapi };
+const mockUserData = {
+  username: uuidv4(),
+  email: `${uuidv4()}@strapi.com`,
+  provider: 'local',
+  password: '1234abc',
+  confirmed: true,
+  blocked: null,
+};
+
+async function createUser(customData = {}) {
+  const defaultRole = await strapi.entityService.findOne('plugin::users-permissions.role', 1);
+
+  const role = customData.role || defaultRole;
+
+  const user = await strapi.plugins['users-permissions'].services.user.add({
+    ...mockUserData,
+    ...customData,
+    role: role.id
+  });
+
+  const jwt = strapi.plugins['users-permissions'].services.jwt.issue({
+    id: user.id,
+  });
+
+  return { user, role, jwt };
+}
+
+module.exports = { setupStrapi, cleanupStrapi, createUser };

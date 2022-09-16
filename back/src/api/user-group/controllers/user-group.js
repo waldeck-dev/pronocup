@@ -9,7 +9,20 @@ const { extractData } = require('../../../utils');
 
 module.exports = createCoreController('api::user-group.user-group', ({ strapi }) => ({
   /**
-   * Join request (create)
+   * FIND: List user's UserGroup
+   */
+  async find(ctx) {
+    const userGroups = await strapi.entityService
+      .findMany('api::user-group.user-group', {
+        filters: { user: ctx.state.user.id },
+        populate: { group: true }
+      });
+
+    return ctx.send({ data: userGroups }, 200);
+  },
+
+  /**
+   * CREATE: Join request (create)
    */
   async create(ctx) {
     const data = {
@@ -20,6 +33,19 @@ module.exports = createCoreController('api::user-group.user-group', ({ strapi })
     const userGroup = await strapi.entityService
       .create('api::user-group.user-group', { data });
 
-    if (userGroup) return ctx.send({ data: userGroup }, 201);
+    if (userGroup) return ctx.send({ data: userGroup, meta: {} }, 201);
+  },
+
+  /**
+   * UPDATE: Group owner accept / reject members
+   */
+  async update(ctx) {
+    if (ctx.request.body.data) {
+      ctx.request.body.data = {
+        ...extractData(ctx.request.body.data, ['confirmed', 'blocked'])
+      };
+    }
+
+    return await super.update(ctx);
   }
 }));

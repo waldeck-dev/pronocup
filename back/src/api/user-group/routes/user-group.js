@@ -5,11 +5,7 @@
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
-
-const getUserGroup = async (id, { strapi }) => await strapi.entityService
-  .findOne('api::user-group.user-group', id, {
-    populate: { group: true, user: true }
-  });
+const { getUserGroup } = require('../utils');
 
 module.exports = createCoreRouter('api::user-group.user-group', {
   config: {
@@ -18,6 +14,7 @@ module.exports = createCoreRouter('api::user-group.user-group', {
      */
     create: {
       policies: [
+        'is-unique-in-group',
         {
           name: 'global::is-owner',
           config: {

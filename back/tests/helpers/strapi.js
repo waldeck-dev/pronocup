@@ -58,4 +58,28 @@ async function createUser(customData = {}) {
   return { user, role, jwt };
 }
 
-module.exports = { setupStrapi, cleanupStrapi, createUser };
+async function createGroup(customData = {}) {
+  return await strapi.entityService
+    .create('api::group.group', {
+      data: {
+        name: 'The test group',
+        ...customData
+      }
+    });
+}
+
+async function createUserGroup(user, group, customData = {}) {
+  return await strapi.entityService
+    .create('api::user-group.user-group', {
+      data: {
+        user,
+        group,
+        ...customData
+      }
+    });
+}
+
+module.exports = {
+  setupStrapi, cleanupStrapi,
+  createUser, createGroup, createUserGroup
+};

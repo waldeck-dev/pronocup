@@ -9,7 +9,20 @@ const { extractData } = require('../../../utils');
 
 module.exports = createCoreController('api::user-group.user-group', ({ strapi }) => ({
   /**
-   * Join request (create)
+   * FIND: List user's UserGroup
+   */
+  async find(ctx) {
+    const userGroups = await strapi.entityService
+      .findMany('api::user-group.user-group', {
+        filters: { user: ctx.state.user.id },
+        populate: { group: true }
+      });
+
+    return ctx.send({ data: userGroups }, 200);
+  },
+
+  /**
+   * CREATE: Join request (create)
    */
   async create(ctx) {
     const data = {

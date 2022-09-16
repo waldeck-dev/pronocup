@@ -14,6 +14,7 @@ module.exports = createCoreRouter('api::user-group.user-group', {
      */
     create: {
       policies: [
+        'is-unique-in-group',
         {
           name: 'global::is-owner',
           config: {

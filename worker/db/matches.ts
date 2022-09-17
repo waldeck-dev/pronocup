@@ -13,13 +13,15 @@ async function fetchMatches(competitionId: number) {
   return response.matches as IMatch[];
 }
 
+export async function createMatch(m: IMatch) {
+  await db.matches.create(m.id!.toString(), m);
+}
+
 export async function updateMatchesFromApi(competitionId: number) {
   const matches = await fetchMatches(competitionId);
 
-  const createMatch = async (m: IMatch) =>
-    await db.matches.create(m.id!.toString(), m);
-
   const updatedMatches: IMatch[] = [];
+
   for (const m of matches) {
     if (!m.id) continue;
 
@@ -30,7 +32,7 @@ export async function updateMatchesFromApi(competitionId: number) {
       const match = await db.matches.get(matchId) as IMatch;
       if (match.lastUpdated !== m.lastUpdated) {
         await db.matches.delete(matchId);
-      }
+      } else continue;
     }
 
     await createMatch(m);
@@ -38,6 +40,21 @@ export async function updateMatchesFromApi(competitionId: number) {
   }
 
   return updatedMatches;
+}
+
+export async function pushMatchesToApi(matches: IMatch[]) {
+  await fetch(
+    `${Deno.env.get("STRAPI_URL")}/matches`,
+    {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${Deno.env.get("STRAPI_TOKEN")}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: { matches } }),
+    },
+  );
 }
 
 export function toDate(dateString: string) {

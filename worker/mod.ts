@@ -7,6 +7,6 @@ config({
   defaults: "./.env/.env.defaults",
 });
 
-import { initData } from "./db/fd-org.ts";
+import { runWorker } from "./db/fd-org.ts";
 
-initData();
+runWorker();

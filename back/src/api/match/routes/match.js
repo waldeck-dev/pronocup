@@ -4,6 +4,15 @@
  * match router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::match.match');
+module.exports = {
+  routes: [
+    {
+      method: 'PUT',
+      path: '/matches',
+      handler: 'match.insert',
+      config: {
+        policies: ['global::is-worker']
+      }
+    }
+  ]
+};

@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "matches",
+  "info": {
+    "singularName": "match",
+    "pluralName": "matches",
+    "displayName": "Match"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fdorg_id": {
+      "type": "biginteger",
+      "required": true,
+      "unique": true
+    },
+    "data": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

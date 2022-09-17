@@ -3,6 +3,7 @@ const {
   createUser, createGroup, createUserGroup
 } = require('../helpers/strapi');
 const isOwner = require('../../src/policies/is-owner');
+const isWorker = require('../../src/policies/is-worker');
 const isUniqueInGroup = require('../../src/api/user-group/policies/is-unique-in-group');
 
 jest.setTimeout(30000);
@@ -76,9 +77,58 @@ describe('Test global policy `is-owner`', () => {
 });
 
 /**
+ * IS-WORKER global policy
+ */
+describe('Test global policy `is-worker`', () => {
+
+  test('Unauthenticated requests return false', async () => {
+    const worker = await isWorker({ state: { isAuthenticated: false } });
+    expect(worker).toBeFalsy();
+  });
+
+  test('Authenticated req fails', async () => {
+    const isAuth = { isAuthenticated: true };
+    
+    // Strategy NOT OK
+    const context1 = {
+      state: { auth: { strategy: { name: 'I am invalid' } }, ...isAuth },
+    };
+    const worker1 = await isWorker(context1);
+    expect(worker1).toBeFalsy();
+
+    // Credential NOT OK
+    const context2 = {
+      state: { auth: {
+        strategy: { name: 'api-token' },
+        credentials: {name: 'I am invalid'}
+      },
+      ...isAuth },
+    };
+    const worker2 = await isWorker(context2);
+    expect(worker2).toBeFalsy();
+  });
+
+  test('Authenticated req succeeds', async () => {
+    // Strategy & Credential OK
+    const context = {
+      state: {
+        auth: {
+          strategy: { name: 'api-token' },
+          credentials: { name: 'worker' }
+        },
+        isAuthenticated: true
+      },
+    };
+    const worker = await isWorker(context);
+    expect(worker).toBeTruthy();
+  });
+
+});
+
+/**
  * IS-UNIQUE-IN-GROUP (UserGroup policy)
  */
-describe('Test global policy `is-unique-in-group`', () => {
+describe('Test UserGroup policy `is-unique-in-group`', () => {
 
   test('missing `group` attr in body return false', async () => {
     const context = {

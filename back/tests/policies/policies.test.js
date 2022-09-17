@@ -1,5 +1,9 @@
-const { setupStrapi, cleanupStrapi } = require('../helpers/strapi');
+const {
+  setupStrapi, cleanupStrapi,
+  createUser, createGroup, createUserGroup
+} = require('../helpers/strapi');
 const isOwner = require('../../src/policies/is-owner');
+const isUniqueInGroup = require('../../src/api/user-group/policies/is-unique-in-group');
 
 jest.setTimeout(30000);
 
@@ -11,6 +15,9 @@ afterAll(async () => {
   await cleanupStrapi();
 });
 
+/**
+ * IS-OWNER global policy
+ */
 describe('Test global policy `is-owner`', () => {
 
   const ownerId = 123;
@@ -66,4 +73,38 @@ describe('Test global policy `is-owner`', () => {
       await expect(fn).rejects.toThrow(Error);
     }
   });
+});
+
+/**
+ * IS-UNIQUE-IN-GROUP (UserGroup policy)
+ */
+describe('Test global policy `is-unique-in-group`', () => {
+
+  test('missing `group` attr in body return false', async () => {
+    const context = {
+      request: { body: { data: { no_group_in_here: true } } }
+    };
+    const isUnique = await isUniqueInGroup(context, {}, { strapi });
+    expect(isUnique).toBeFalsy();
+  });
+
+  test('policy work as expected', async () => {
+    const group = await createGroup();
+    const { user } = await createUser();
+
+    const context = {
+      state: { user },
+      request: { body: { data: { group: group.id } } }
+    };
+
+    // User NOT in group => true
+    const isUnique = await isUniqueInGroup(context, {}, { strapi });
+    expect(isUnique).toBeTruthy();
+
+    // User ALREADY IN group => false
+    await createUserGroup(user, group);
+    const isUnique2 = await isUniqueInGroup(context, {}, { strapi });
+    expect(isUnique2).toBeFalsy();
+  });
+
 });

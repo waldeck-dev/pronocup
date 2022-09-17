@@ -6,4 +6,6 @@
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::pronostic.pronostic');
+module.exports = createCoreRouter('api::pronostic.pronostic', {
+  except: ['create']
+});

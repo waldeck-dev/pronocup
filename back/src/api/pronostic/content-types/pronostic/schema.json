@@ -4,7 +4,8 @@
   "info": {
     "singularName": "pronostic",
     "pluralName": "pronostics",
-    "displayName": "Pronostic"
+    "displayName": "Pronostic",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -16,10 +17,10 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "match": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::match.match"
+    "match_id": {
+      "type": "biginteger",
+      "required": true,
+      "unique": false
     },
     "pronostic": {
       "type": "json",

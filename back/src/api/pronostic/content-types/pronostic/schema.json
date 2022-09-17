@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pronostics",
+  "info": {
+    "singularName": "pronostic",
+    "pluralName": "pronostics",
+    "displayName": "Pronostic"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "match": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::match.match"
+    },
+    "pronostic": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

@@ -1,11 +1,12 @@
 import { db } from "./db.ts";
-import { getAuthHeaders } from "../db/fd-org.ts";
+import { getAuthHeaders as getFdOrgHeaders } from "../db/fd-org.ts";
+import { getAuthHeaders as getBackHeaders } from "../db/back.ts";
 import { IMatch } from "../types/fd-org.ts";
 
 async function fetchMatches(competitionId: number) {
   const response = await fetch(
     `${Deno.env.get("FDORG_URL")}/competitions/${competitionId}/matches`,
-    { headers: getAuthHeaders() },
+    { headers: getFdOrgHeaders() },
   )
     .then((res) => res.json())
     .catch((error) => console.error("Unable to fecth matches: " + error));
@@ -47,11 +48,7 @@ export async function pushMatchesToApi(matches: IMatch[]) {
     `${Deno.env.get("STRAPI_URL")}/matches`,
     {
       method: "PUT",
-      headers: {
-        "Authorization": `Bearer ${Deno.env.get("STRAPI_TOKEN")}`,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: getBackHeaders(),
       body: JSON.stringify({ data: { matches } }),
     },
   );

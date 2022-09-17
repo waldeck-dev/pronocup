@@ -7,6 +7,19 @@ config({
   defaults: "./.env/.env.defaults",
 });
 
-import { runWorker } from "./db/fd-org.ts";
+import { db } from "./db/db.ts";
+import { pushMatchesToApi, updateMatchesFromApi } from "./db/matches.ts";
+
+export async function runWorker() {
+  const competitionId = parseInt(
+    Deno.env.get("FDORG_COMPETITION_ID") as string,
+  );
+
+  const updatedMatches = await updateMatchesFromApi(competitionId);
+  if (updatedMatches.length === 0) return;
+
+  const allMatches = await db.matches.getAll(true);
+  await pushMatchesToApi(allMatches);
+}
 
 runWorker();

@@ -2,9 +2,12 @@ const {
   setupStrapi, cleanupStrapi,
   createUser, createGroup, createUserGroup
 } = require('../helpers/strapi');
+const { v4: uuidv4 } = require('uuid');
+
 const isOwner = require('../../src/policies/is-owner');
 const isWorker = require('../../src/policies/is-worker');
 const isUniqueInGroup = require('../../src/api/user-group/policies/is-unique-in-group');
+const matchExists = require('../../src/api/match/policies/match-exists');
 
 jest.setTimeout(30000);
 
@@ -155,6 +158,44 @@ describe('Test UserGroup policy `is-unique-in-group`', () => {
     await createUserGroup(user, group);
     const isUnique2 = await isUniqueInGroup(context, {}, { strapi });
     expect(isUnique2).toBeFalsy();
+  });
+
+});
+
+/**
+ * MATCH-EXISTS (Match policy)
+ */
+describe('Test Match policy `match-exists`', () => {
+
+  test('policy fails if not config.getMatchId()', async () => {
+    const fakeConfig = [{}, { getMatchId: 'invalid-type' }];
+    for (const conf of fakeConfig) {
+      const fn = async () => await matchExists({}, conf, { strapi });
+      await expect(fn).rejects.toThrow(Error);
+    } 
+  });
+
+  test('match not exists returns 404', async () => {
+    const fakeConfig = { getMatchId: jest.fn(() => -1) };
+    const fakeRes = jest.fn(() => false);
+    const fakeContext = { response: { ctx: { notFound: fakeRes } } };
+    const res = await matchExists(fakeContext, fakeConfig, { strapi });
+    expect(res).toBeFalsy();
+    expect(fakeRes.mock.calls.length).toBe(1);
+  });
+
+  test('match exists returns true', async () => {
+    const fdorg_id = uuidv4();
+    await strapi.entityService.create('api::match.match', {
+      data: { fdorg_id, data: '{}' }
+    });
+
+    const fakeConfig = { getMatchId: jest.fn(() => fdorg_id) };
+    const fakeRes = jest.fn(() => false);
+    const fakeContext = { response: { ctx: { notFound: fakeRes } } };
+    const res = await matchExists(fakeContext, fakeConfig, { strapi });
+    expect(res).toBeTruthy();
+    expect(fakeRes.mock.calls.length).toBe(0);
   });
 
 });

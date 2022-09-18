@@ -12,21 +12,20 @@ module.exports = {
    * CREATE pronostics
    */
   submit: async (ctx) => {
+    const fdorg_id = +ctx.params.mid;
+
     const match = await strapi.entityService
-      .findMany('api::match.match', {
-        filters: { fdorg_id: +ctx.params.mid }
-      });
+      .findMany('api::match.match', { filters: { fdorg_id } });
 
     if (match.length === 0)
-      return ctx.notFound(`Match ${ctx.params.mid} not found`);
+      return ctx.notFound(`Match ${fdorg_id} not found`);
 
-    const match_id = match[0].id;
     const user = await getAuthenticatedUser(ctx.state.user.id);
 
     // UPDATE pronostic if already exists
     let existingPronostic = await strapi.entityService
       .findMany('api::pronostic.pronostic', {
-        filters: { match_id, user }
+        filters: { match_id: fdorg_id, user }
       });
 
     existingPronostic = existingPronostic.length > 0
@@ -53,7 +52,7 @@ module.exports = {
     } else {
       const newProno = await strapi.entityService
         .create('api::pronostic.pronostic', {
-          data: { user, match_id, pronostic: JSON.stringify(value) }
+          data: { user, match_id: fdorg_id, pronostic: JSON.stringify(value) }
         });
 
       ctx.send({ data: newProno }, 201);

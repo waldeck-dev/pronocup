@@ -19,7 +19,7 @@ module.exports = async (policyContext, config, { strapi }) => {
         code: 'match_not_found'
       });
 
-  const m = JSON.parse(match[0].data);
+  const m = match[0].data;
 
   const matchStartDate = new Date(m?.utcDate);
   if (!(matchStartDate instanceof Date)) return false;

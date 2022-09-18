@@ -189,9 +189,7 @@ describe('Test Match policy `match-is-valid`', () => {
     await strapi.entityService.create('api::match.match', {
       data: {
         fdorg_id,
-        data: JSON.stringify(
-          { utcDate: new Date('2000-01-01').toISOString() }
-        )
+        data: { utcDate: new Date('2000-01-01').toISOString() }
       }
     });
 
@@ -208,9 +206,7 @@ describe('Test Match policy `match-is-valid`', () => {
     await strapi.entityService.create('api::match.match', {
       data: {
         fdorg_id,
-        data: JSON.stringify(
-          { utcDate: new Date('2100-01-01').toISOString() }
-        )
+        data: { utcDate: new Date('2100-01-01').toISOString() }
       }
     });
 

@@ -39,7 +39,9 @@ module.exports = createCoreController('api::pronostic.pronostic', () => ({
     const pronostic = extractData(ctx.request.body.data, ['pronostic']);
 
     const { value, error } = pronosticSchema.validate(pronostic.pronostic);
-    if (error) return ctx.badRequest(error);
+    if (error) return ctx.badRequest(error, {
+      code: 'invalid_payload'
+    });
 
     const newProno = await strapi.entityService.create('api::pronostic.pronostic', {
       data: {

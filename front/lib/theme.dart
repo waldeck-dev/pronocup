@@ -48,4 +48,4 @@ ThemeData darkThemeData(BuildContext context) {
   );
 }
 
-final appBarTheme = const AppBarTheme(centerTitle: false, elevation: 0);
+final appBarTheme = const AppBarTheme(centerTitle: true, elevation: 0);

@@ -13,7 +13,7 @@ class _MatchListViewState extends State<MatchListView> {
   Widget build(BuildContext context) {
     return ListView.separated(
           padding: const EdgeInsets.all(12),
-          itemCount: 1,
+          itemCount: 5,
           separatorBuilder: (context, index) {
             return const SizedBox(height: 12);
           },
@@ -32,23 +32,3 @@ Widget matchCard(int index) => ClipRRect(
     width: double.infinity,
   ),
 );
-
-/*class MatchCard extends StatelessWidget {
-  const MatchCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          color: Colors.red.shade200,
-          child: Image.network(
-            'https://source.unsplash.com/random?sig'
-          ),
-        ),
-      ),
-    );
-  }
-}*/

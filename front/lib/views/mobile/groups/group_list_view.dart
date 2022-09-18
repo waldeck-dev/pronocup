@@ -11,9 +11,6 @@ class _GroupListViewState extends State<GroupListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TEST'),
-      ),
       body: Center(
         child: Container(
           color: Colors.red,

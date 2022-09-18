@@ -26,8 +26,21 @@ module.exports = {
       user = await getAuthenticatedUser(ctx.state.user.id);
     }
 
+    const filters = { user };
+
+    const matchId = ctx.query.match;
+    if (matchId) {
+      if (typeof matchId === 'number' && !isNaN(matchId))
+        return ctx.badRequest('Invalid match ID', { code: 'invalid_payload' });
+
+      const match = await strapi.entityService
+        .findMany('api::match.match', { filters: { fdorg_id: matchId } });
+      
+      filters.match_id = match.length > 0 ? match[0].fdorg_id : -1;
+    }
+
     const pronostics = await strapi.entityService
-      .findMany('api::pronostic.pronostic', { filters: { user } });
+      .findMany('api::pronostic.pronostic', { filters });
 
     return ctx.send({ data: { pronostics } }, 200);
   },

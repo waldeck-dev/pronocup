@@ -12,7 +12,7 @@ module.exports = {
       config: {
         policies: [
           {
-            name: 'api::match.match-exists',
+            name: 'api::match.match-is-valid',
             config: {
               getMatchId: (ctx) => +ctx?.params?.mid
             }

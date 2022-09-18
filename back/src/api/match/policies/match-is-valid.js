@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * `match-exists` policy
+ * `match-is-valid` policy
  */
 
 module.exports = async (policyContext, config, { strapi }) => {
   if (typeof config.getMatchId !== 'function')
-    throw new Error('`getMatchId()` must be set on `match-exists` policy');
+    throw new Error('`getMatchId()` must be set on `match-is-valid` policy');
 
   const fdorg_id = config.getMatchId(policyContext);
 
@@ -19,5 +19,12 @@ module.exports = async (policyContext, config, { strapi }) => {
         code: 'match_not_found'
       });
 
-  return true;
+  const m = JSON.parse(match[0].data);
+
+  const matchStartDate = new Date(m?.utcDate);
+  if (!(matchStartDate instanceof Date)) return false;
+
+  const now = new Date().getTime();
+
+  return now < matchStartDate.getTime();
 };

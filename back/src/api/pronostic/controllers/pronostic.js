@@ -51,12 +51,6 @@ module.exports = {
   submit: async (ctx) => {
     const fdorg_id = +ctx.params.mid;
 
-    const match = await strapi.entityService
-      .findMany('api::match.match', { filters: { fdorg_id } });
-
-    if (match.length === 0)
-      return ctx.notFound(`Match ${fdorg_id} not found`);
-
     const user = await getAuthenticatedUser(ctx.state.user.id);
 
     // UPDATE pronostic if already exists

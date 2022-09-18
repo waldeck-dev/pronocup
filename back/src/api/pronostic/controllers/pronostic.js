@@ -4,36 +4,70 @@
  * pronostic controller
  */
 
-const { createCoreController } = require('@strapi/strapi').factories;
 const { getAuthenticatedUser, extractData } = require('../../../utils');
 const { pronosticSchema } = require('../validations');
 
-module.exports = createCoreController('api::pronostic.pronostic', () => ({
+module.exports = {
+  /**
+   * FIND user's pronostics
+  */
+  find: async (ctx) => {
+    let user;
+
+    const userId = ctx.query.user;
+    if (userId) {
+      if (typeof userId === 'number' && !isNaN(userId)) 
+        return ctx.badRequest('Invalid user ID', { code: 'invalid_payload' });
+
+      user = await strapi.entityService
+        .findOne('plugin::users-permissions.user', userId);
+
+    } else {
+      user = await getAuthenticatedUser(ctx.state.user.id);
+    }
+
+    const filters = { user };
+
+    const matchId = ctx.query.match;
+    if (matchId) {
+      if (typeof matchId === 'number' && !isNaN(matchId))
+        return ctx.badRequest('Invalid match ID', { code: 'invalid_payload' });
+
+      const match = await strapi.entityService
+        .findMany('api::match.match', { filters: { fdorg_id: matchId } });
+      
+      filters.match_id = match.length > 0 ? match[0].fdorg_id : -1;
+    }
+
+    const pronostics = await strapi.entityService
+      .findMany('api::pronostic.pronostic', { filters });
+
+    return ctx.send({ data: { pronostics } }, 200);
+  },
+
   /**
    * CREATE pronostics
    */
-  create: async (ctx) => {
+  submit: async (ctx) => {
+    const fdorg_id = +ctx.params.mid;
+
     const match = await strapi.entityService
-      .findMany('api::match.match', {
-        filters: { fdorg_id: +ctx.params.mid }
-      });
+      .findMany('api::match.match', { filters: { fdorg_id } });
 
     if (match.length === 0)
-      return ctx.notFound(`Match ${ctx.params.mid} not found`);
+      return ctx.notFound(`Match ${fdorg_id} not found`);
 
-    const matchId = match[0].id;
     const user = await getAuthenticatedUser(ctx.state.user.id);
 
-    // Only ONE pronostic allowed by player
-    const existingPronostic = await strapi.entityService
+    // UPDATE pronostic if already exists
+    let existingPronostic = await strapi.entityService
       .findMany('api::pronostic.pronostic', {
-        filters: { match_id: matchId, user }
+        filters: { match_id: fdorg_id, user }
       });
 
-    if (existingPronostic.length > 0)
-      return ctx.badRequest('Pronostic already exists', {
-        code: 'already_exists'
-      });
+    existingPronostic = existingPronostic.length > 0
+      ? existingPronostic[0]
+      : null;
 
     // Validate pronostic data
     const pronostic = extractData(ctx.request.body.data, ['pronostic']);
@@ -43,14 +77,22 @@ module.exports = createCoreController('api::pronostic.pronostic', () => ({
       code: 'invalid_payload'
     });
 
-    const newProno = await strapi.entityService.create('api::pronostic.pronostic', {
-      data: {
-        user,
-        match_id: matchId,
-        pronostic: JSON.stringify(value)
-      }
-    });
+    // Perform CREATE or UPDATE
+    if (existingPronostic) {
+      const updatedProno = await strapi.entityService
+        .update('api::pronostic.pronostic', existingPronostic.id, {
+          data: { pronostic: JSON.stringify(value) }
+        });
 
-    ctx.send({ data: newProno }, 201);
+      return ctx.send({ data: updatedProno }, 200);
+
+    } else {
+      const newProno = await strapi.entityService
+        .create('api::pronostic.pronostic', {
+          data: { user, match_id: fdorg_id, pronostic: JSON.stringify(value) }
+        });
+
+      ctx.send({ data: newProno }, 201);
+    }
   }
-}));
+};

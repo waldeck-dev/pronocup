@@ -1,11 +1,14 @@
-'use strict';
-
-/**
- * pronostic router
- */
-
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::pronostic.pronostic', {
-  except: ['create']
-});
+module.exports = {
+  routes: [
+    {
+      method: 'GET',
+      path: '/pronostics',
+      handler: 'pronostic.find'
+    },
+    {
+      method: 'PUT',
+      path: '/matches/:mid([0-9]+)/pronostics',
+      handler: 'pronostic.submit'
+    }
+  ]
+};

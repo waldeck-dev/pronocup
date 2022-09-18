@@ -1,8 +1,7 @@
 const { setupStrapi, cleanupStrapi, createUser } = require('./helpers/strapi');
 const {
   getAuthenticatedUser,
-  extractData,
-  validate
+  extractData
 } = require('../src/utils');
 
 jest.setTimeout(30000);
@@ -41,22 +40,6 @@ describe('Test utils.js functions', () => {
     expect(typeof newPayload).toBe('object');
     expect(newPayload).toHaveProperty('keepMe');
     expect(newPayload.keepMe).toBe(fakePayload.keepMe);
-  });
-
-  test('validate() function', () => {
-    const expectations = [
-      // rule, value, expectation
-      ['number', 123, true],
-      ['number', 'foo', false],
-      ['*number', 123, true],
-      ['*number', 'foo', false],
-      ['*number', null, false],
-      ['*number', undefined, false],
-    ];
-
-    for (const [rule, value, expectation] of expectations) {
-      expect(validate(rule, value)).toBe(expectation);
-    }
   });
 
 });

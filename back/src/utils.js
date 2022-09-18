@@ -22,25 +22,4 @@ function extractData(originalBody, fields) {
   return newBody;
 }
 
-/**
- * Field validator
- */
-function validate(rule, value) {
-  let required = false;
-  
-  let type = rule;
-  if (rule.startsWith('*')) {
-    required = true;
-    type = rule.substring(1);
-  }
-
-  const validation = typeof value === type;
-
-  if (required) {
-    return validation && ![undefined, null, ''].includes(value);
-  }
-
-  return validation;
-}
-
-module.exports = { getAuthenticatedUser, extractData, validate };
+module.exports = { getAuthenticatedUser, extractData };

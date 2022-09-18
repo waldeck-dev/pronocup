@@ -4,6 +4,10 @@
 
 ```sh
 cd back
+
+cp .env.example .env
+# Edit your environment variables
+
 yarn install
 ```
 

@@ -9,6 +9,30 @@ const { pronosticSchema } = require('../validations');
 
 module.exports = {
   /**
+   * FIND user's pronostics
+  */
+  find: async (ctx) => {
+    let user;
+
+    const userId = ctx.query.user;
+    if (userId) {
+      if (typeof userId === 'number' && !isNaN(userId)) 
+        return ctx.badRequest('Invalid user ID', { code: 'invalid_payload' });
+
+      user = await strapi.entityService
+        .findOne('plugin::users-permissions.user', userId);
+
+    } else {
+      user = await getAuthenticatedUser(ctx.state.user.id);
+    }
+
+    const pronostics = await strapi.entityService
+      .findMany('api::pronostic.pronostic', { filters: { user } });
+
+    return ctx.send({ data: { pronostics } }, 200);
+  },
+
+  /**
    * CREATE pronostics
    */
   submit: async (ctx) => {

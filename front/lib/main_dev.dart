@@ -5,13 +5,8 @@ import 'app_config.dart';
 import 'package:front/views/mobile/signinOrSignUp/login_view.dart';
 
 void main() {
-  const configuredApp = AppConfig(
-      child: MyApp(),
-      environment: Environment.dev,
-      baseUrl: "http://localhost:1337/"
-  );
-  setUpLocator();
-  runApp(configuredApp);
+  setUpLocator("http://localhost:1337/");
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -5,10 +5,25 @@ import 'package:front/utils/Locator.dart';
 import 'package:front/utils/local_storage.dart';
 
 abstract class UserRepository{
+  Future<User> CheckAuthUser();
   Future<User> LogIn(String identifier, String password);
 }
 
 class UserApi extends UserRepository{
+  Future<User> CheckAuthUser() async {
+    String token = await getIt.get<UserSharedPreferences>().getToken();
+    User user = User();
+    try {
+      var response = await Dio().get(getIt.get<AppConfig>().baseUrl + "api/users/me",
+      options: Options(headers: {'Authorization': 'Bearer $token'})
+      );
+      user = User.fromJson(response.data);
+    } catch (exception) {
+      print(exception);
+    }
+    return user;
+  }
+
   Future<User> LogIn(String identifier, String password) async {
     User user = User();
     try{

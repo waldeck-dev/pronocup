@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:front/utils/Locator.dart';
+import 'package:front/view_models/user/user_view_model.dart';
 import 'package:front/views/mobile/main_view.dart';
 
-
-const users = const {
-  'dribbble@gmail.com': '12345',
-  'hunter@gmail.com': 'hunter',
-};
-
 class LoginScreen extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: 2250);
+  Duration get loginTime => const Duration(milliseconds: 2250);
+  UserViewModel userViewModel = getIt.get<UserViewModel>();
 
   Future<String?> _authUser(LoginData data) {
-    debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User not exists';
+    return Future.delayed(loginTime).then((_) async {
+      await userViewModel.LogIn(data.name, data.password);
+      if(userViewModel.user.id != null) {
+        return null;
+      } else {
+        return 'Email or password does not match';
       }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      return null;
     });
   }
 
@@ -35,9 +30,6 @@ class LoginScreen extends StatelessWidget {
   Future<String> _recoverPassword(String name) {
     debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
       return '';
     });
   }
@@ -51,7 +43,7 @@ class LoginScreen extends StatelessWidget {
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MainScreen(),
+          builder: (context) => const MainScreen(),
         ));
       },
       onRecoverPassword: _recoverPassword,

@@ -5,7 +5,7 @@ import 'app_config.dart';
 import 'package:front/views/mobile/signinOrSignUp/login_view.dart';
 
 void main() {
-  setUpLocator("http://localhost:1337/");
+  setUpLocator("http://192.168.56.1:1337/");
   runApp(MyApp());
 }
 

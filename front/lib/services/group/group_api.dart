@@ -19,7 +19,7 @@ class GroupApi extends GroupRepository{
       var response = await Dio().get("${getIt.get<AppConfig>().baseUrl}api/groups/",
           options: Options(headers: {'Authorization': 'Bearer $token'})
       );
-      var list = response.data as List;
+      var list = response.data["data"] as List;
       groups = list.map((group) => Group.fromJson(group)).toList();
     } catch(exception) {
       print(exception);

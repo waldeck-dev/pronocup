@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/views/components/widgets.dart';
+import 'package:front/views/mobile/groups/group_list_view.dart';
 
 class GroupView extends StatefulWidget {
   const GroupView({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class _GroupViewState extends State<GroupView> {
           const Expanded(
               child: TabBarView(
                 children: [
-                  Text("test"),
+                  GroupListView(),
                   Text("coucou")
                 ],
               )

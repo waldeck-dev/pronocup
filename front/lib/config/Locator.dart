@@ -14,5 +14,4 @@ void setUpLocator(url) {
   getIt.registerSingleton<UserSharedPreferences>(UserSharedPreferences());
   getIt.registerSingleton<UserViewModel>(UserViewModel(userRepository: UserApi()));
   getIt.registerSingleton<GroupsViewModel>(GroupsViewModel(groupRepository: GroupApi()));
-  getIt.registerSingleton<UserViewModel>(UserViewModel(userRepository: UserApi()));
 }

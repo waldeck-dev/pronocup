@@ -9,6 +9,7 @@ class GroupsViewModel {
 
   Future<List<GroupViewModel>> GetAllGroups() async {
     List<Group> list = await groupRepository!.GetAllGroups();
+    listGroup = list.map((group) => GroupViewModel(groupModel: group)).toList();
     return listGroup;
   }
 }

@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData.light().copyWith(
-    primaryColor: kPrimaryColor,
     scaffoldBackgroundColor: Colors.white,
+    primaryColor: kPrimaryColor,
     appBarTheme: appBarTheme,
     iconTheme: const IconThemeData(color: kContentColorLightTheme),
     textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)

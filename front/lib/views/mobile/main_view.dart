@@ -36,7 +36,15 @@ class _MainScreenState extends State<MainScreen> {
                 secondaryAnimation: secondaryAnimation,
                 child: child,
             ),
-        child: pageList[pageIndex],
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/foot_background.jpg"),
+              fit: BoxFit.cover,
+            )
+          ),
+          child: pageList[pageIndex],
+        )
         ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: pageIndex,

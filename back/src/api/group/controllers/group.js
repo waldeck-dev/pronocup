@@ -9,6 +9,18 @@ const { getAuthenticatedUser } = require('../../../utils');
 
 module.exports = createCoreController('api::group.group', ({ strapi }) => ({
   /**
+   * Retrieve All users' groups
+   */
+  async find(ctx) {
+    const groups = await strapi.entityService
+      .findMany('api::group.group', {
+        filters: { owner: ctx.state.user }
+      });
+    
+    return { data: groups};
+  },
+
+  /**
    * Retrieve a Group and related UserGroup object if member of group
    */
   async findOne(ctx) {

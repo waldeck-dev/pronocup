@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front/theme.dart';
-import 'package:front/utils/Locator.dart';
+import 'package:front/config/Locator.dart';
 import 'package:front/view_models/user/user_view_model.dart';
 import 'package:front/views/mobile/main_view.dart';
-import 'app_config.dart';
 import 'package:front/views/mobile/signinOrSignUp/login_view.dart';
 
 void main() {

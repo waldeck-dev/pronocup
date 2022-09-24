@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:front/utils/Locator.dart';
+import 'package:front/config/Locator.dart';
 import 'package:front/view_models/user/user_view_model.dart';
 import 'package:front/views/mobile/main_view.dart';
 

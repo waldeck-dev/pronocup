@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:front/app_config.dart';
+import 'package:front/config/app_config.dart';
 import 'package:front/models/user/user_model.dart';
-import 'package:front/utils/Locator.dart';
-import 'package:front/utils/local_storage.dart';
+import 'package:front/config/Locator.dart';
+import 'package:front/config/local_storage.dart';
 
 abstract class UserRepository{
   Future<User> CheckAuthUser();

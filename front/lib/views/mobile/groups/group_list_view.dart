@@ -10,8 +10,9 @@ class GroupListView extends StatefulWidget {
 class _GroupListViewState extends State<GroupListView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return DefaultTabController(
+      length: 2,
+      child: Center(
         child: Container(
           color: Colors.red,
           height: 150,

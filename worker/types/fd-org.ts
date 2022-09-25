@@ -18,6 +18,11 @@ export enum Stage {
   GROUP_STAGE = "GROUP_STAGE",
 }
 
+export enum Team {
+  HOME = "homeTeam",
+  AWAY = "awayTeam",
+}
+
 interface ITeam {
   id: number | null;
   name: string | null;
@@ -48,4 +53,10 @@ export interface IMatch {
   homeTeam: ITeam;
   awayTeam: ITeam;
   score: IScore;
+}
+
+export interface ICountry {
+  nameFr: string;
+  iso2: string;
+  emoji: string;
 }

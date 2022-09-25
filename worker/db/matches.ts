@@ -1,7 +1,8 @@
 import { db } from "./db.ts";
 import { getAuthHeaders as getFdOrgHeaders } from "../db/fd-org.ts";
 import { getAuthHeaders as getBackHeaders } from "../db/back.ts";
-import { IMatch } from "../types/fd-org.ts";
+import { ICountry, IMatch, Team } from "../types/fd-org.ts";
+import Countries from "./countries.json" assert { type: "json" };
 
 async function fetchMatches(competitionId: number) {
   const response = await fetch(
@@ -15,6 +16,12 @@ async function fetchMatches(competitionId: number) {
 }
 
 export async function createMatch(m: IMatch) {
+  [Team.AWAY, Team.HOME].forEach((team: Team) => {
+    const name = m[team].name;
+    if (!name) return;
+    const country = (Countries as Record<string, ICountry>)[name];
+    Object.assign(m[team], country);
+  });
   await db.matches.create(m.id!.toString(), m);
 }
 

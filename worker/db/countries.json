@@ -1,0 +1,162 @@
+{
+    "Senegal": {
+        "nameFr": "Sénégal",
+        "iso2": "SE",
+        "emoji": "🇸🇳"
+    },
+    "Netherlands": {
+        "nameFr": "Pays-Bas",
+        "iso2": "NL",
+        "emoji": "🇳🇱"
+    },
+    "Qatar": {
+        "nameFr": "Qatar",
+        "iso2": "QA",
+        "emoji": "🇶🇦"
+    },
+    "Ecuador": {
+        "nameFr": "Equateur",
+        "iso2": "EC",
+        "emoji": "🇪🇨"
+    },
+    "England": {
+        "nameFr": "Angleterre",
+        "iso2": "GB-ENG",
+        "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+    },
+    "Iran": {
+        "nameFr": "Iran",
+        "iso2": "IR",
+        "emoji": "🇮🇷"
+    },
+    "United States": {
+        "nameFr": "Etats-Unis",
+        "iso2": "US",
+        "emoji": "🇺🇸"
+    },
+    "Wales": {
+        "nameFr": "Pays de Galles",
+        "iso2": "GB-WLS",
+        "emoji": "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+    },
+    "Argentina": {
+        "nameFr": "Argentine",
+        "iso2": "AR",
+        "emoji": "🇦🇷"
+    },
+    "Saudi Arabia": {
+        "nameFr": "Arabie Saoudite",
+        "iso2": "SA",
+        "emoji": "🇸🇦"
+    },
+    "Mexico": {
+        "nameFr": "Mexique",
+        "iso2": "MX",
+        "emoji": "🇲🇽"
+    },
+    "Poland": {
+        "nameFr": "Pologne",
+        "iso2": "PL",
+        "emoji": "🇵🇱"
+    },
+    "Denmark": {
+        "nameFr": "Danemark",
+        "iso2": "DK",
+        "emoji": "🇩🇰"
+    },
+    "Tunisia": {
+        "nameFr": "Tunisie",
+        "iso2": "TN",
+        "emoji": "🇹🇳"
+    },
+    "France": {
+        "nameFr": "France",
+        "iso2": "FR",
+        "emoji": "🇫🇷"
+    },
+    "Australia": {
+        "nameFr": "Australie",
+        "iso2": "AU",
+        "emoji": "🇦🇺"
+    },
+    "Germany": {
+        "nameFr": "Allemagne",
+        "iso2": "GE",
+        "emoji": "🇬🇪"
+    },
+    "Japan": {
+        "nameFr": "Japon",
+        "iso2": "JP",
+        "emoji": "🇯🇵"
+    },
+    "Spain": {
+        "nameFr": "Espagne",
+        "iso2": "ES",
+        "emoji": "🇪🇸"
+    },
+    "Costa Rica": {
+        "nameFr": "Costa Rica",
+        "iso2": "CR",
+        "emoji": "🇨🇷"
+    },
+    "Morocco": {
+        "nameFr": "Maroc",
+        "iso2": "MA",
+        "emoji": "🇲🇦"
+    },
+    "Croatia": {
+        "nameFr": "Croatie",
+        "iso2": "HR",
+        "emoji": "🇭🇷"
+    },
+    "Belgium": {
+        "nameFr": "Belgique",
+        "iso2": "BE",
+        "emoji": "🇧🇪"
+    },
+    "Canada": {
+        "nameFr": "Canada",
+        "iso2": "CA",
+        "emoji": "🇨🇦"
+    },
+    "Switzerland": {
+        "nameFr": "Suisse",
+        "iso2": "CH",
+        "emoji": "🇨🇭"
+    },
+    "Cameroon": {
+        "nameFr": "Cameroun",
+        "iso2": "CM",
+        "emoji": "🇨🇲"
+    },
+    "Brazil": {
+        "nameFr": "Brésil",
+        "iso2": "BR",
+        "emoji": "🇧🇷"
+    },
+    "Serbia": {
+        "nameFr": "Serbie",
+        "iso2": "RS",
+        "emoji": "🇷🇸"
+    },
+    "Uruguay": {
+        "nameFr": "Uruguay",
+        "iso2": "UY",
+        "emoji": "🇺🇾"
+    },
+    "South Korea": {
+        "nameFr": "Corée du Sud",
+        "iso2": "KR",
+        "emoji": "🇰🇷"
+    },
+    "Portugal": {
+        "nameFr": "Portugal",
+        "iso2": "PT",
+        "emoji": "🇵🇹"
+    },
+    "Ghana": {
+        "nameFr": "Ghana",
+        "iso2": "GH",
+        "emoji": "🇬🇭"
+    }
+}

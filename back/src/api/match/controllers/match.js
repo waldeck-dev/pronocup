@@ -7,6 +7,13 @@ const { extractData } = require('../../../utils');
  */
 
 module.exports = {
+  find: async (ctx) => {
+    const matches = await strapi.entityService
+      .findMany('api::match.match');
+
+    return ctx.send({ data: matches }, 200);
+  },
+
   insert: async (ctx) => {
     const payload = ctx.request.body.data?.matches;
     if (!payload || !Array.isArray(payload)) {

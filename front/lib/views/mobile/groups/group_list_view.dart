@@ -17,10 +17,10 @@ class _GroupListViewState extends State<GroupListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.only(bottom: 8),
         child: Stack(
           children:[
-            Expanded(
+            Positioned.fill(
                 child: FutureBuilder(
                   future: getIt.get<GroupsViewModel>().GetAllGroups(),
                   builder: (context, snapshot) {
@@ -51,12 +51,12 @@ class _GroupListViewState extends State<GroupListView> {
                 onPressed: () {},
                 color: Colors.green,
                 textColor: Colors.white,
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   size: 24,
                 ),
-                padding: EdgeInsets.all(16),
-                shape: CircleBorder(),
+                padding: const EdgeInsets.all(16),
+                shape: const CircleBorder(),
               ),
             ),
           ]

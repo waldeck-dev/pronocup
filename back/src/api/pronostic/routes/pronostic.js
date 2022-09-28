@@ -6,6 +6,11 @@ module.exports = {
       handler: 'pronostic.find'
     },
     {
+      method: 'GET',
+      path: '/matches/:mid([0-9]+)/pronostics',
+      handler: 'pronostic.findOne'
+    },
+    {
       method: 'PUT',
       path: '/matches/:mid([0-9]+)/pronostics',
       handler: 'pronostic.submit',

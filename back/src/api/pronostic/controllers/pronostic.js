@@ -10,7 +10,7 @@ const { pronosticSchema } = require('../validations');
 module.exports = {
   /**
    * FIND user's pronostics
-  */
+   */
   find: async (ctx) => {
     let user;
 
@@ -43,6 +43,27 @@ module.exports = {
       .findMany('api::pronostic.pronostic', { filters });
 
     return ctx.send({ data: { pronostics } }, 200);
+  },
+
+  /**
+   * FIND ONE user pronostic
+   */
+  findOne: async (ctx) => {
+    const fdorg_id = +ctx.params.mid;
+
+    const user = await getAuthenticatedUser(ctx.state.user.id);
+
+    // UPDATE pronostic if already exists
+    const pronostic = await strapi.entityService
+      .findMany('api::pronostic.pronostic', {
+        filters: { match_id: fdorg_id, user }
+      });
+
+    if (pronostic.length === 0) {
+      return ctx.notFound('No prediction');
+    }
+
+    ctx.send({ data: pronostic[0] });
   },
 
   /**

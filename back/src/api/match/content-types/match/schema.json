@@ -4,7 +4,8 @@
   "info": {
     "singularName": "match",
     "pluralName": "matches",
-    "displayName": "Match"
+    "displayName": "Match",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -19,6 +20,10 @@
     "data": {
       "type": "json",
       "required": true
+    },
+    "processed": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

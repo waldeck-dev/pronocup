@@ -19,9 +19,11 @@ module.exports = async (policyContext, config, { strapi }) => {
         code: 'match_not_found'
       });
 
-  const m = match[0].data;
+  const m = match[0];
 
-  const matchStartDate = new Date(m?.utcDate);
+  if (m.processed) return false;
+
+  const matchStartDate = new Date(m.data?.utcDate);
   if (!(matchStartDate instanceof Date)) return false;
 
   const now = new Date().getTime();

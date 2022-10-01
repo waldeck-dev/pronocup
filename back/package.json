@@ -12,20 +12,20 @@
     "test": "jest --forceExit --detectOpenHandles"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.18.9",
-    "eslint": "^8.23.0",
-    "eslint-plugin-jest": "^27.0.3",
-    "jest": "^29.0.2",
-    "sqlite3": "^5.0.11",
+    "@babel/eslint-parser": "^7.19.1",
+    "eslint": "^8.24.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "jest": "^29.1.2",
+    "sqlite3": "^5.1.1",
     "supertest": "^6.2.4",
     "uuid": "^9.0.0"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.3.8",
-    "@strapi/plugin-users-permissions": "4.3.8",
-    "@strapi/strapi": "4.3.8",
-    "joi": "^17.6.0",
-    "pg": "8.6.0"
+    "@strapi/plugin-i18n": "4.4.1",
+    "@strapi/plugin-users-permissions": "4.4.1",
+    "@strapi/strapi": "4.4.1",
+    "joi": "^17.6.2",
+    "pg": "8.8.0"
   },
   "author": {
     "name": "A Strapi developer"

@@ -14,6 +14,15 @@ module.exports = {
     return ctx.send({ data: matches }, 200);
   },
 
+  processed: async (ctx) => {
+    const processedMatches = await strapi.entityService
+      .findMany('api::match.match', { filters: { processed: true } });
+
+    return ctx.send({
+      data: { processed: processedMatches.map((m) => +m.fdorg_id) }
+    }, 200);
+  },
+
   insert: async (ctx) => {
     const payload = ctx.request.body.data?.matches;
     if (!payload || !Array.isArray(payload)) {

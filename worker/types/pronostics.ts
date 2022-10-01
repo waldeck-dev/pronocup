@@ -1,7 +1,4 @@
-export enum PlayTime {
-  FullTime = "fullTime",
-  HalfTime = "halfTime",
-}
+import { PlayTime } from "./fd-org.ts";
 
 export enum Team {
   HOME = "home",
@@ -10,16 +7,16 @@ export enum Team {
 }
 
 export interface IScore {
-  home: number;
-  away: number;
+  [Team.HOME]: number;
+  [Team.AWAY]: number;
 }
 
 export interface IPronostic {
   score: {
-    fullTime: IScore;
-    halfTime: IScore;
+    [PlayTime.FullTime]: IScore;
+    [PlayTime.HalfTime]?: IScore;
   };
-  goals: {
+  goals?: {
     minute_first: number;
   };
 }
@@ -37,5 +34,24 @@ export interface IGameScore {
   draw: {
     [PlayTime.FullTime]: ITrueFalse;
     [PlayTime.HalfTime]: ITrueFalse;
+  };
+  exactScore: {
+    [PlayTime.FullTime]: ITrueFalse;
+    [PlayTime.HalfTime]: ITrueFalse;
+  };
+  minuteFirstGoal: ITrueFalse;
+}
+
+export interface IScoreResponse {
+  score: {
+    [PlayTime.FullTime]: number;
+    [PlayTime.HalfTime]: number | null;
+  };
+  exactScore: {
+    [PlayTime.FullTime]: number;
+    [PlayTime.HalfTime]: number | null;
+  };
+  goals: {
+    minute_first: number | null;
   };
 }

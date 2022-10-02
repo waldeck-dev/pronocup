@@ -12,6 +12,11 @@ class GroupsViewModel {
     listGroup = list.map((group) => GroupViewModel(groupModel: group)).toList();
     return listGroup;
   }
+
+  Future <GroupViewModel> CreateGroup(String name) async {
+    Group group = await groupRepository!.CreateGroup(name);
+    return GroupViewModel(groupModel: group);
+  }
 }
 
 class GroupViewModel {

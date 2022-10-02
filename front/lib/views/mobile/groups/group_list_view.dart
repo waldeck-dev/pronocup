@@ -4,6 +4,7 @@ import 'package:front/config/Locator.dart';
 import 'package:front/models/group/group_model.dart';
 import 'package:front/view_models/group/groups_view_model.dart';
 import 'package:front/views/components/widgets.dart';
+import 'package:front/views/mobile/groups/group_add_view.dart';
 
 class GroupListView extends StatefulWidget {
   const GroupListView({Key? key}) : super(key: key);
@@ -48,7 +49,12 @@ class _GroupListViewState extends State<GroupListView> {
             Align(
               alignment: Alignment.bottomRight,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => _buildPopupDialog(context),
+                  );
+                },
                 color: Colors.green,
                 textColor: Colors.white,
                 child: const Icon(
@@ -86,4 +92,29 @@ class GroupCard extends StatelessWidget {
       )
     );
   }
+}
+
+Widget _buildPopupDialog(BuildContext context) {
+
+  return AlertDialog(
+    title: Text("Creer un groupe : "),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const <Widget>[
+        GroupAdd()
+      ],
+    ),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        style: TextButton.styleFrom(
+            primary: Colors.grey
+        ),
+        child: const Text("Fermer"),
+      ),
+    ],
+  );
 }

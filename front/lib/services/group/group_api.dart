@@ -32,9 +32,14 @@ class GroupApi extends GroupRepository{
     String token = await getIt.get<UserSharedPreferences>().getToken();
     Group group = Group();
     try {
-
+      var response = await Dio().post("${getIt.get<AppConfig>().baseUrl}api/groups/",
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+          data: {
+            'data': { 'name': name }
+          });
+      group = Group.fromJson(response.data['data']);
     } catch(exception) {
-
+      print(exception);
     }
     return group;
   }

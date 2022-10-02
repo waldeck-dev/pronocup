@@ -37,7 +37,12 @@ class _GroupAddState extends State<GroupAdd> {
           addVerticalSpace(12),
           Center(
             child: ElevatedButton(
-              onPressed: () {}, child: null,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+
+                }
+              },
+              child: Text("Enregistrer"),
             ),
           )
         ],

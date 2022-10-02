@@ -6,7 +6,7 @@ class Group {
 
   Group.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    name = json['attributes']['name'];
   }
 
   Map<String, dynamic> toJson() {

@@ -8,7 +8,11 @@ config({
 });
 
 import { db } from "./db/db.ts";
-import { pushMatchesToApi, updateMatchesFromApi } from "./db/matches.ts";
+import {
+  getProcessedMatches,
+  pushMatchesToApi,
+  updateMatchesFromApi,
+} from "./db/matches.ts";
 
 export async function runWorker() {
   const competitionId = parseInt(
@@ -17,6 +21,9 @@ export async function runWorker() {
 
   const updatedMatches = await updateMatchesFromApi(competitionId);
   if (updatedMatches.length === 0) return;
+
+  const processedMatches = await getProcessedMatches();
+  console.log("PROCESSED", processedMatches);
 
   const allMatches = await db.matches.getAll(true);
   await pushMatchesToApi(allMatches);

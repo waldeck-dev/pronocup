@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/config/Locator.dart';
+import 'package:front/view_models/group/groups_view_model.dart';
 import 'package:front/views/components/widgets.dart';
 
 class GroupAdd extends StatefulWidget {
@@ -37,9 +39,26 @@ class _GroupAddState extends State<GroupAdd> {
           addVerticalSpace(12),
           Center(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
+                  GroupViewModel group = await getIt<GroupsViewModel>().CreateGroup(name.text);
+                  if (group.id != null) {
 
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Erreur"),
+                          content: Text("Une erreur est survenue. Veuillez vérifier vos saisies ou réessayer plus tard."),
+                          actions: [
+                            TextButton(
+                                child: const Text('OK'),
+                                onPressed: () => {
+                                  Navigator.pop(context)
+                                })
+                          ],
+                        ));
+                  }
                 }
               },
               child: Text("Enregistrer"),

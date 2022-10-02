@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:front/views/mobile/profile/profile_view.dart';
-import 'groups/group_view.dart';
+import 'groups/groups_view.dart';
 import 'match/match_list_view.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
   List<Widget> pageList = <Widget>[
     const MatchListView(),
-    const GroupView(),
+    const GroupsView(),
     const ProfileView()
   ];
   @override

@@ -13,6 +13,7 @@
           :placeholder="field.label"
           :password-reveal="field.type === 'password'"
           :icon="field.icon"
+          rounded
         ></b-input>
       </b-field>
 
@@ -20,6 +21,7 @@
         :loading="isLoading"
         type="is-primary"
         expanded
+        rounded
         @click="submit(scope)"
       >
         🚀 Go !
@@ -30,6 +32,7 @@
         type="is-primary"
         class="mt-2"
         outlined
+        rounded
         expanded
       >
         ➡️ Inscription

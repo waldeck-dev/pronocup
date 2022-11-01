@@ -1,7 +1,7 @@
 <template>
   <div class="has-text-centered">
     <h1 class="is-size-1">👋</h1>
-    <h2 class="is-size-5">Tu nous manques déjà...</h2>
+    <h2 class="is-size-5">Au revoir<br />Tu nous manques déjà...</h2>
   </div>
 </template>
 

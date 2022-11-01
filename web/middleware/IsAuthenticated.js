@@ -1,4 +1,4 @@
-export default ({ store, redirect, next }) => {
+export default ({ store, redirect }) => {
   if (!store.getters.isAuthenticated) {
     // Check if any token available on localStorage
     const localToken = localStorage.getItem('token')

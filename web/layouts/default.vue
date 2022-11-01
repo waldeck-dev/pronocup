@@ -11,5 +11,6 @@ import TheNavbar from '~/components/layout/TheNavbar.vue'
 export default {
   name: 'DefaultLayout',
   components: { TheNavbar },
+  middleware: 'IsAuthenticated',
 }
 </script>

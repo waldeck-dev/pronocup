@@ -18,6 +18,10 @@ const mutations = {
   setUserData(state, user) {
     Object.assign(state.user, user)
   },
+  logout(state) {
+    state.token = null
+    localStorage.removeItem('token')
+  }
 }
 
 const actions = {}

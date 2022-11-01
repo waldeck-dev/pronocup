@@ -1,10 +1,12 @@
 <template>
-  <div>The Index</div>
+  <div></div>
 </template>
 
 <script>
 export default {
   name: 'IndexPage',
-  middleware: 'IsAuthenticated',
+  mounted() {
+    // this.$router.push({ name: "predictions" })
+  }
 }
 </script>

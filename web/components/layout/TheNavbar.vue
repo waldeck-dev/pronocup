@@ -10,6 +10,7 @@
         type="is-toggle-rounded"
         position="is-centered"
         class="block"
+        @input="goTo"
       >
         <b-tab-item
           v-for="tab in tabs"
@@ -30,17 +31,31 @@ export default {
   name: 'TheNavbar',
   data() {
     return {
-      current: -1,
+      current: 0,
       tabs: [
         { name: '⚽ Pronostics', route: 'predictions' },
         { name: '🧑‍🤝‍🧑 Groupes', route: 'groups' },
-        { name: '💡', route: 'help' },
+        { name: '⚙️', route: 'info' },
       ],
     }
   },
   computed: {
     ...mapGetters(['isAuthenticated']),
   },
+  created() {
+    // Make sure selected tab match route on first load
+    const routeName = this.$route.name
+    const tabIndex = this.tabs.findIndex((t) => t.route === routeName)
+    if (tabIndex >= 0) {
+      this.current = tabIndex
+    }
+  },
+  methods: {
+    goTo(tabIndex) {
+      const tab = this.tabs[tabIndex]
+      this.$router.push({ name: tab.route })
+    }
+  }
 }
 </script>
 

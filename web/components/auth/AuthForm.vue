@@ -95,6 +95,7 @@ export default {
           resHandler: (res) => {
             this.$store.commit('setAuthToken', res.data.jwt)
             this.$store.commit('setUserData', res.data.user)
+            this.$router.push({ name: 'predictions' })
           },
         },
       }[scope]

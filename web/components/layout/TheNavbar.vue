@@ -1,5 +1,5 @@
 <template>
-  <header class="container pb-5">
+  <header class="container">
     <h1 id="brand" class="has-text-centered has-text-primary is-size-1 my-5">
       Pronocup
     </h1>
@@ -54,8 +54,8 @@ export default {
     goTo(tabIndex) {
       const tab = this.tabs[tabIndex]
       this.$router.push({ name: tab.route })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -1,3 +1,3 @@
 <template>
-    <h1>Predictions</h1>
+  <h1>Predictions</h1>
 </template>

@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import DefaultLayout from "@/layouts/default.vue"
+import DefaultLayout from '@/layouts/default.vue'
 
 export default {
-    name: 'PublicLayout',
-    components: { DefaultLayout },
-    middleware: null
+  name: 'PublicLayout',
+  components: { DefaultLayout },
+  middleware: null,
 }
 </script>

@@ -21,7 +21,7 @@ const mutations = {
   logout(state) {
     state.token = null
     localStorage.removeItem('token')
-  }
+  },
 }
 
 const actions = {}

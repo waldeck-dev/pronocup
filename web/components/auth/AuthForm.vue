@@ -1,5 +1,5 @@
 <template>
-  <section class="px-4">
+  <section class="px-4 pt-5">
     <form>
       <b-field
         v-for="field in fields"

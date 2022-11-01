@@ -8,6 +8,6 @@
 
 <script>
 export default {
-  name: 'InfoPage'
+  name: 'InfoPage',
 }
 </script>

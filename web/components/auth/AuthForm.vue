@@ -99,17 +99,12 @@ export default {
         },
       }[scope]
 
-      console.log(this.getPayload(action.args))
-
       await this.$axios
         .post(
           `${this.$store.state.apiUrl}${action.endpoint}`,
           this.getPayload(action.args)
         )
         .then((res) => action.resHandler(res))
-        .catch((err) => {
-          console.log('Err', err)
-        })
 
       this.isLoading = false
     },

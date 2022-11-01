@@ -1,8 +1,24 @@
-const state = {}
+const state = () => ({
+  // API
+  apiUrl: 'http://localhost:1337/',
+  // User
+  token: null,
+  user: {},
+})
 
-const getters = {}
+const getters = {
+  isAuthenticated: (state) => !!state.token,
+}
 
-const mutations = {}
+const mutations = {
+  setAuthToken(state, token) {
+    state.token = token
+    localStorage.setItem('token', token)
+  },
+  setUserData(state, user) {
+    Object.assign(state.user, user)
+  },
+}
 
 const actions = {}
 

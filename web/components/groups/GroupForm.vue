@@ -1,14 +1,15 @@
 <template>
   <div>
-    <h1 class="mb-5 is-size-5 has-text-centered has-text-weight-bold">
+    <SectionTitle>
       {{ scope === 'create' ? 'Création groupe' : 'Modification groupe' }}
-    </h1>
+    </SectionTitle>
 
     <b-field label="Nom du groupe" label-position="on-border">
       <b-input
         v-model="inputs.name"
         icon="account-group"
         placeholder="Nom du groupe"
+        maxlength="30"
         rounded
         expanded
       ></b-input>
@@ -22,9 +23,12 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { isSuccess, apiError } from '@/components/helpers'
+import SectionTitle from '@/components/ui/SectionTitle.vue'
 
 export default {
   name: 'GroupForm',
+  components: { SectionTitle },
   props: {
     scope: {
       type: String,
@@ -55,7 +59,17 @@ export default {
           data: { name: this.inputs.name },
         },
         { headers: this.apiHeaders }
-      ).then((response) => {})
+      )
+        .then((response) => {
+          isSuccess.bind(this)(
+            `Le groupe "${response.data.data.attributes.name}" a été créé`
+          )
+          this.$router.push({
+            name: 'groups-id',
+            params: { id: response.data.data.id },
+          })
+        })
+        .catch((error) => apiError.bind(this)(error))
 
       this.isLoading = false
     },

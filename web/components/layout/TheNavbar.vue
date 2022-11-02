@@ -45,7 +45,7 @@ export default {
   created() {
     // Make sure selected tab match route on first load
     const routeName = this.$route.name
-    const tabIndex = this.tabs.findIndex((t) => t.route === routeName)
+    const tabIndex = this.tabs.findIndex((t) => routeName.startsWith(t.route))
     if (tabIndex >= 0) {
       this.current = tabIndex
     }

@@ -93,7 +93,7 @@ export default {
 
       const action = {
         login: {
-          endpoint: 'api/auth/local',
+          endpoint: '/auth/local',
           args: ['identifier', 'password'],
           resHandler: (res) => {
             this.$store.commit('setAuthToken', res.data.jwt)

@@ -6,7 +6,7 @@
 export default {
   name: 'IndexPage',
   mounted() {
-    this.$router.push({ name: "predictions" })
+    this.$router.push({ name: 'predictions' })
   },
 }
 </script>

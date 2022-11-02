@@ -1,6 +1,6 @@
 const state = () => ({
   // API
-  apiUrl: 'http://localhost:1337/',
+  apiUrl: 'http://localhost:1337/api',
   // User
   token: null,
   user: {},
@@ -8,6 +8,10 @@ const state = () => ({
 
 const getters = {
   isAuthenticated: (state) => !!state.token,
+  apiHeaders: (state) => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${state.token}`,
+  }),
 }
 
 const mutations = {

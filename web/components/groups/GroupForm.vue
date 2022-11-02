@@ -14,11 +14,15 @@
       ></b-input>
     </b-field>
 
-    <b-button type="is-primary" expanded rounded>💾 Enregistrer</b-button>
+    <b-button type="is-primary" expanded rounded @click="submit"
+      >💾 Enregistrer</b-button
+    >
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
+
 export default {
   name: 'GroupForm',
   props: {
@@ -33,6 +37,28 @@ export default {
         name: null,
       },
     }
+  },
+  computed: {
+    ...mapState(['apiUrl']),
+    ...mapGetters(['apiHeaders']),
+  },
+  methods: {
+    async submit() {
+      this.isLoading = true
+
+      const endpoint = `${this.apiUrl}/groups`
+      const method = 'post'
+
+      await this.$axios[method](
+        endpoint,
+        {
+          data: { name: this.inputs.name },
+        },
+        { headers: this.apiHeaders }
+      ).then((response) => {})
+
+      this.isLoading = false
+    },
   },
 }
 </script>

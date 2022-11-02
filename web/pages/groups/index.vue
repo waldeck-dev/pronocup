@@ -1,5 +1,18 @@
 <template>
   <div>
+    <!-- Group list -->
+    <SectionTitle>Mes groupes</SectionTitle>
+
+    <GroupCard
+      v-for="group in groups"
+      :key="group.id"
+      :group="group"
+      @deleted="onDelete"
+    ></GroupCard>
+
+    <!-- New Group -->
+    <SectionTitle class="mt-6">Nouveau groupe</SectionTitle>
+
     <b-button
       style="display: block; margin: 0 auto 1.5rem auto"
       type="is-primary"
@@ -7,16 +20,8 @@
       rounded
       @click="$router.push({ name: 'groups-new' })"
     >
-      Créer un groupe
+      Créer un nouveau groupe
     </b-button>
-
-    <SectionTitle>Mes groupes</SectionTitle>
-
-    <GroupCard
-      v-for="group in groups"
-      :key="group.id"
-      :group="group"
-    ></GroupCard>
   </div>
 </template>
 
@@ -45,6 +50,14 @@ export default {
   computed: {
     ...mapState(['apiUrl']),
     ...mapGetters(['apiHeaders']),
+  },
+  methods: {
+    onDelete(groupId) {
+      const groupIndex = this.groups.findIndex((g) => g.id === groupId)
+      if (groupIndex >= 0) {
+        this.groups.splice(groupIndex, 1)
+      }
+    },
   },
 }
 </script>

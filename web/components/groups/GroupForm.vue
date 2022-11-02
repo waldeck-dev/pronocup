@@ -34,11 +34,16 @@ export default {
       type: String,
       required: true,
     },
+    group: {
+      type: Object,
+      required: false,
+      default: null,
+    },
   },
   data() {
     return {
       inputs: {
-        name: null,
+        name: this.group.name || null,
       },
     }
   },
@@ -50,8 +55,7 @@ export default {
     async submit() {
       this.isLoading = true
 
-      const endpoint = `${this.apiUrl}/groups`
-      const method = 'post'
+      const { method, endpoint } = this.getEndpointAndMethod(this.scope)
 
       await this.$axios[method](
         endpoint,
@@ -72,6 +76,17 @@ export default {
         .catch((error) => apiError.bind(this)(error))
 
       this.isLoading = false
+    },
+    getEndpointAndMethod(scope) {
+      let endpoint = `${this.apiUrl}/groups`
+      let method = 'post'
+
+      if (scope === 'update') {
+        endpoint += `/${this.group.id}`
+        method = 'put'
+      }
+
+      return { method, endpoint }
     },
   },
 }

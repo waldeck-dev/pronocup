@@ -101,10 +101,3 @@ export default {
   },
 }
 </script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
-.bungee {
-  font-family: 'Bungee', cursive;
-}
-</style>

@@ -37,7 +37,7 @@ export default {
     group: {
       type: Object,
       required: false,
-      default: null,
+      default: () => ({}),
     },
   },
   data() {
@@ -65,13 +65,15 @@ export default {
         { headers: this.apiHeaders }
       )
         .then((response) => {
-          isSuccess.bind(this)(
-            `Le groupe "${response.data.data.attributes.name}" a été créé`
-          )
           this.$router.push({
             name: 'groups-id',
             params: { id: response.data.data.id },
           })
+          isSuccess.bind(this)(
+            `Le groupe "${response.data.data.attributes.name}" a été ${
+              this.scope === 'create' ? 'créé' : 'modifié'
+            }`
+          )
         })
         .catch((error) => apiError.bind(this)(error))
 

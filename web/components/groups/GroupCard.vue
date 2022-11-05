@@ -14,7 +14,7 @@
     <p class="control">
       <b-dropdown>
         <template #trigger>
-          <b-button type="is-primary is-light" rounded> ⚙️ </b-button>
+          <b-button type="is-primary is-light" rounded>⚙️</b-button>
         </template>
 
         <b-dropdown-item class="has-text-weight-bold" custom>

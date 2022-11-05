@@ -17,6 +17,6 @@ import SectionTitle from '@/components/ui/SectionTitle.vue'
 
 export default {
   name: 'InfoPage',
-  components: { SectionTitle }
+  components: { SectionTitle },
 }
 </script>

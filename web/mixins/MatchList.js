@@ -13,5 +13,5 @@ export default {
   computed: {
     ...mapState(['apiUrl']),
     ...mapGetters(['apiHeaders']),
-  }
+  },
 }

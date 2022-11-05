@@ -4,6 +4,8 @@ const state = () => ({
   // User
   token: null,
   user: {},
+  // Predictions
+  matches: [],
 })
 
 const getters = {
@@ -15,6 +17,9 @@ const getters = {
 }
 
 const mutations = {
+  //
+  // USER
+  //
   setAuthToken(state, token) {
     state.token = token
     localStorage.setItem('token', token)
@@ -25,6 +30,12 @@ const mutations = {
   logout(state) {
     state.token = null
     localStorage.removeItem('token')
+  },
+  //
+  // PREDICTIONS
+  //
+  setMatches(state, matches) {
+    state.matches = matches
   },
 }
 

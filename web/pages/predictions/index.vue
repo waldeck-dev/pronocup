@@ -18,17 +18,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
-import { apiError } from '@/components/helpers'
+import MatchList from '@/mixins/MatchList'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import MatchCard from '@/components/predictions/MatchCard.vue'
 
 export default {
   name: 'PredictionsPage',
   components: { SectionTitle, MatchCard },
+  mixins: [MatchList],
   data() {
     return {
-      allMatches: [],
       stages: {
         GROUP_STAGE: 'Phase de poule',
         LAST_16: '8<sup>ème</sup> de finale',
@@ -39,18 +38,10 @@ export default {
       },
     }
   },
-  async fetch() {
-    await this.$axios
-      .get(`${this.apiUrl}/matches`, { headers: this.apiHeaders })
-      .then((response) => (this.allMatches = response.data.data))
-      .catch((error) => apiError.bind(this)(error))
-  },
   computed: {
-    ...mapState(['apiUrl']),
-    ...mapGetters(['apiHeaders']),
     classifiedMatched() {
       return Object.keys(this.stages).map((s) => {
-        return this.allMatches
+        return [...this.$store.state.matches]
           .filter(
             (m) =>
               m.data.stage === s && m.data.homeTeam.id && m.data.awayTeam.id

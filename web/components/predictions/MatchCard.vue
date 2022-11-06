@@ -8,7 +8,7 @@
         @click="goToPrediction(match.fdorg_id)"
       >
         {{ homeTeam.emoji }}
-        ➖ 🆚 ➖
+        {{ predictedScore }}
         {{ awayTeam.emoji }}
       </b-button>
     </p>
@@ -23,10 +23,12 @@
 
 <script>
 import MatchData from '@/mixins/MatchData'
+import PredictionsList from '@/mixins/PredictionsList'
+import { getEmojiNumber } from '@/components/helpers'
 
 export default {
   name: 'MatchCard',
-  mixins: [MatchData],
+  mixins: [PredictionsList, MatchData],
   props: {
     match: {
       type: Object,
@@ -37,8 +39,16 @@ export default {
     return {}
   },
   computed: {
-    fdorgId() {
-      return +this.$route.params.fdorgid
+    prediction() {
+      return this.$store.getters.getPrediction(this.match.fdorg_id)
+    },
+    predictedScore() {
+      if (!this.prediction.id) return '➖ 🆚 ➖'
+      return (
+        `${getEmojiNumber(this.prediction?.pronostic?.score?.fullTime?.home)}` +
+        ' 🆚 ' +
+        `${getEmojiNumber(this.prediction?.pronostic?.score?.fullTime?.away)}`
+      )
     },
     matchDate() {
       const date = new Date(this.match.data.utcDate)

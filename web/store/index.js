@@ -16,7 +16,11 @@ const getters = {
     Authorization: `Bearer ${state.token}`,
   }),
   getPrediction: (state) => (matchId) => {
-    return state.predictions.find((p) => matchId === parseInt(p.match_id))
+    return (
+      state.predictions.find(
+        (p) => parseInt(p.match_id) === parseInt(matchId)
+      ) ?? {}
+    )
   },
 }
 

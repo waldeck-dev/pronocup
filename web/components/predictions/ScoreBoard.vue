@@ -33,7 +33,10 @@
           Un match nul
         </template>
 
-        <template v-else> Une victoire de <strong>{{ predictedWinnerFullTimeName }}</strong></template>
+        <template v-else>
+          Une victoire de
+          <strong>{{ predictedWinnerFullTimeName }}</strong></template
+        >
 
         te rapportera <strong class="has-text-success">+10 points</strong>
       </p>
@@ -89,7 +92,7 @@ export default {
     predictedWinnerFullTimeName() {
       return {
         home: this.homeTeam.nameFr,
-        away: this.awayTeam.nameFr
+        away: this.awayTeam.nameFr,
       }[this.predictedWinnerFullTime]
     },
     predictedScoreFulltTime() {

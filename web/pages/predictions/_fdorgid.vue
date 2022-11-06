@@ -30,6 +30,10 @@ export default {
   data() {
     return {}
   },
+  async fetch() {
+    await this.listMatches()
+    await this.listPredictions()
+  },
   computed: {
     match() {
       return (

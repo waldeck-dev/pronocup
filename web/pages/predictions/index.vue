@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$fetchState.pending">
     <SectionTitle>Pronostics</SectionTitle>
 
     <section v-for="(matches, index) in classifiedMatched" :key="index">
@@ -38,6 +38,10 @@ export default {
         FINAL: 'Final',
       },
     }
+  },
+  async fetch() {
+    await this.listMatches()
+    await this.listPredictions()
   },
   computed: {
     classifiedMatched() {

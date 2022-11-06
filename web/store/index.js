@@ -48,6 +48,15 @@ const mutations = {
   setPredictions(state, predictions) {
     state.predictions = predictions
   },
+  putPrediction(state, prediction) {
+    const matchId = prediction.match_id
+    const idx = state.predictions.findIndex((p) => p.match_id === matchId)
+    if (idx >= 0) {
+      Object.assign(state.predictions[idx], prediction)
+    } else {
+      state.predictions.push(prediction)
+    }
+  }
 }
 
 const actions = {}

@@ -12,11 +12,17 @@
 
     <SectionTitle>Mon pronostic</SectionTitle>
 
-    <ScoreBoard :match="match" :prediction="prediction"></ScoreBoard>
+    <ScoreBoard
+      v-model="pronostic"
+      :match="match"
+      :prediction="prediction"
+      @input="submit"
+    ></ScoreBoard>
   </div>
 </template>
 
 <script>
+import { apiError } from '@/components/helpers'
 import MatchList from '@/mixins/MatchList'
 import PredictionsList from '@/mixins/PredictionsList'
 import MatchData from '@/mixins/MatchData'
@@ -28,7 +34,9 @@ export default {
   components: { SectionTitle, ScoreBoard },
   mixins: [MatchList, PredictionsList, MatchData],
   data() {
-    return {}
+    return {
+      pronostic: {},
+    }
   },
   async fetch() {
     await this.listMatches()
@@ -50,6 +58,25 @@ export default {
     },
     prediction() {
       return this.$store.getters.getPrediction(this.fdorgId)
+    },
+  },
+  watch: {
+    '$fetchState.pending'() {
+      if (!this.$fetchState.pending && !this.prediction.id) this.submit()
+    },
+  },
+  methods: {
+    async submit() {
+      await this.$axios
+        .put(
+          `${this.apiUrl}/matches/${this.fdorgId}/pronostics`,
+          { data: { pronostic: this.pronostic } },
+          { headers: this.apiHeaders }
+        )
+        .then((response) => {
+          this.$store.commit('putPrediction', response.data.data)
+        })
+        .catch((error) => apiError.bind(this)(error))
     },
   },
 }

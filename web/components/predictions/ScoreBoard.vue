@@ -13,11 +13,11 @@
         </p>
       </div>
 
-      <ScoreField v-model="score.fullTime.home"></ScoreField>
+      <ScoreField v-model="score.fullTime.home" @input="onInput"></ScoreField>
 
       <span>🆚</span>
 
-      <ScoreField v-model="score.fullTime.away"></ScoreField>
+      <ScoreField v-model="score.fullTime.away" @input="onInput"></ScoreField>
 
       <div class="is-flex is-flex-direction-column is-flex-grow-1">
         <p>{{ awayTeam.emoji }}</p>
@@ -64,6 +64,11 @@ export default {
   components: { ScoreField },
   mixins: [MatchData],
   props: {
+    value: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
     match: {
       type: Object,
       required: true,
@@ -76,6 +81,7 @@ export default {
   },
   data() {
     return {
+      counter: 0,
       score: {
         fullTime: { home: 0, away: 0 },
       },
@@ -103,12 +109,13 @@ export default {
     prediction: {
       deep: true,
       handler(newPrediction) {
-        this.updateScore(newPrediction)
+        if (this.prediction.id) this.updateScore(newPrediction)
       },
     },
   },
   mounted() {
     if (this.prediction.id) this.updateScore(this.prediction)
+    this.onInput()
   },
   methods: {
     updateScore(newPrediction) {
@@ -124,6 +131,9 @@ export default {
           )
         })
       })
+    },
+    onInput() {
+      this.$emit('input', { score: { ...this.score } })
     },
   },
 }

@@ -22,8 +22,11 @@
 </template>
 
 <script>
+import MatchData from '@/mixins/MatchData'
+
 export default {
   name: 'MatchCard',
+  mixins: [MatchData],
   props: {
     match: {
       type: Object,
@@ -34,11 +37,8 @@ export default {
     return {}
   },
   computed: {
-    homeTeam() {
-      return this.getTeam('homeTeam')
-    },
-    awayTeam() {
-      return this.getTeam('awayTeam')
+    fdorgId() {
+      return +this.$route.params.fdorgid
     },
     matchDate() {
       const date = new Date(this.match.data.utcDate)
@@ -50,9 +50,6 @@ export default {
     },
   },
   methods: {
-    getTeam(team) {
-      return this.match.data[team]
-    },
     goToPrediction(fdorgid) {
       this.$router.push({ name: 'predictions-fdorgid', params: { fdorgid } })
     },

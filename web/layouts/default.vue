@@ -1,5 +1,5 @@
 <template>
-  <div class="container column is-10" style="max-width: 700px;">
+  <div class="container column is-10" style="max-width: 700px">
     <TheNavbar />
     <Nuxt />
   </div>

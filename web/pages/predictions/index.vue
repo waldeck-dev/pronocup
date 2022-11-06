@@ -19,13 +19,14 @@
 
 <script>
 import MatchList from '@/mixins/MatchList'
+import PredictionsList from '@/mixins/PredictionsList'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import MatchCard from '@/components/predictions/MatchCard.vue'
 
 export default {
   name: 'PredictionsPage',
   components: { SectionTitle, MatchCard },
-  mixins: [MatchList],
+  mixins: [MatchList, PredictionsList],
   data() {
     return {
       stages: {

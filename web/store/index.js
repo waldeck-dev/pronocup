@@ -6,6 +6,7 @@ const state = () => ({
   user: {},
   // Predictions
   matches: [],
+  predictions: [],
 })
 
 const getters = {
@@ -14,6 +15,9 @@ const getters = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${state.token}`,
   }),
+  getPrediction: (state) => (matchId) => {
+    return state.predictions.find((p) => matchId === parseInt(p.match_id))
+  },
 }
 
 const mutations = {
@@ -36,6 +40,9 @@ const mutations = {
   //
   setMatches(state, matches) {
     state.matches = matches
+  },
+  setPredictions(state, predictions) {
+    state.predictions = predictions
   },
 }
 

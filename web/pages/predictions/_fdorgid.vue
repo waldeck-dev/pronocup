@@ -12,27 +12,25 @@
 
     <SectionTitle>Mon pronostic</SectionTitle>
 
-    <ScoreBoard :match="match"></ScoreBoard>
+    <ScoreBoard :match="match" :prediction="prediction"></ScoreBoard>
   </div>
 </template>
 
 <script>
 import MatchList from '@/mixins/MatchList'
-import Teams from '@/mixins/Teams'
+import PredictionsList from '@/mixins/PredictionsList'
+import MatchData from '@/mixins/MatchData'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import ScoreBoard from '@/components/predictions/ScoreBoard.vue'
 
 export default {
   name: 'PredictionPage',
   components: { SectionTitle, ScoreBoard },
-  mixins: [MatchList, Teams],
+  mixins: [MatchList, PredictionsList, MatchData],
   data() {
     return {}
   },
   computed: {
-    fdorgId() {
-      return +this.$route.params.fdorgid
-    },
     match() {
       return (
         this.$store.state.matches.find(
@@ -45,6 +43,9 @@ export default {
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(new Date(this.match.data.utcDate))
+    },
+    prediction() {
+      return this.$store.getters.getPrediction(this.fdorgId)
     },
   },
 }

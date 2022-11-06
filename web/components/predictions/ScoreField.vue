@@ -1,10 +1,10 @@
 <template>
   <div class="mx-3 is-flex is-flex-direction-column is-align-items-center">
     <div
-      :style="{ cursor: value < max ? 'pointer' : 'initial' }"
+      :style="{ cursor: value < max && !disabled ? 'pointer' : 'initial' }"
       :class="{
-        'has-text-primary': value < max,
-        'has-text-grey-lighter': value >= max,
+        'has-text-primary': value < max && !disabled,
+        'has-text-grey-lighter': value >= max || disabled,
       }"
       class="arrow has-text-centered has-text-primary"
       @click="increase"
@@ -20,10 +20,10 @@
     </div>
 
     <div
-      :style="{ cursor: value > min ? 'pointer' : 'initial' }"
+      :style="{ cursor: value > min && !disabled ? 'pointer' : 'initial' }"
       :class="{
-        'has-text-primary': value > min,
-        'has-text-grey-lighter': value <= min,
+        'has-text-primary': value > min && !disabled,
+        'has-text-grey-lighter': value <= min || disabled,
       }"
       class="arrow has-text-centered"
       @click="decrease"
@@ -52,17 +52,22 @@ export default {
       required: false,
       default: 15,
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {}
   },
   methods: {
     increase() {
-      if (this.value >= this.max) return
+      if (this.value >= this.max || this.disabled) return
       this.updateValue(this.value + 1)
     },
     decrease() {
-      if (this.value <= this.min) return
+      if (this.value <= this.min || this.disabled) return
       this.updateValue(this.value - 1)
     },
     updateValue(value) {

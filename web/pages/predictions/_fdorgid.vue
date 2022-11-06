@@ -1,45 +1,33 @@
 <template>
-  <div
-    class="is-flex is-justify-content-center is-align-items-center"
-    style="width: 100%"
-  >
-    <div class="is-flex is-flex-direction-column has-text-right is-flex-grow-1">
-      <p>{{ homeTeam.emoji }}</p>
-      <p>
-        <strong class="is-size-7">{{ homeTeam.nameFr }}</strong>
-      </p>
-    </div>
+  <div>
+    <b-message v-if="homeTeam.id && awayTeam.id" class="mb-5 has-text-centered">
+      <h2 class="mb-1 has-text-weight-bold">
+        {{ homeTeam.nameFr }} {{ homeTeam.emoji }}
+        🆚
+        {{ awayTeam.emoji }} {{ awayTeam.nameFr }}
+      </h2>
 
-    <ScoreField v-model="score.home"></ScoreField>
+      <p class="is-size-7">{{ matchDate }}</p>
+    </b-message>
 
-    <span>🆚</span>
+    <SectionTitle>Mon pronostic</SectionTitle>
 
-    <ScoreField v-model="score.away"></ScoreField>
-
-    <div class="is-flex is-flex-direction-column is-flex-grow-1">
-      <p>{{ awayTeam.emoji }}</p>
-      <p>
-        <strong class="is-size-7">{{ awayTeam.nameFr }}</strong>
-      </p>
-    </div>
+    <ScoreBoard :match="match"></ScoreBoard>
   </div>
 </template>
 
 <script>
 import MatchList from '@/mixins/MatchList'
-import ScoreField from '@/components/predictions/ScoreField.vue'
+import Teams from '@/mixins/Teams'
+import SectionTitle from '@/components/ui/SectionTitle.vue'
+import ScoreBoard from '@/components/predictions/ScoreBoard.vue'
 
 export default {
   name: 'PredictionPage',
-  components: { ScoreField },
-  mixins: [MatchList],
+  components: { SectionTitle, ScoreBoard },
+  mixins: [MatchList, Teams],
   data() {
-    return {
-      score: {
-        home: 0,
-        away: 0,
-      },
-    }
+    return {}
   },
   computed: {
     fdorgId() {
@@ -52,11 +40,11 @@ export default {
         ) ?? {}
       )
     },
-    homeTeam() {
-      return this.match?.data?.homeTeam ?? {}
-    },
-    awayTeam() {
-      return this.match?.data?.awayTeam ?? {}
+    matchDate() {
+      return new Intl.DateTimeFormat('fr-FR', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }).format(new Date(this.match.data.utcDate))
     },
   },
 }

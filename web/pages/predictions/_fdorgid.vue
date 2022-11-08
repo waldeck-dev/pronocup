@@ -81,7 +81,7 @@ export default {
       if (!this.$fetchState.pending && !this.prediction.id) {
         setTimeout(() => {
           this.submit()
-        }, 1000);
+        }, 200);
       }
     },
   },

@@ -13,11 +13,27 @@
         </p>
       </div>
 
-      <ScoreField v-model="score.fullTime.home" @input="onInput"></ScoreField>
+      <ScoreField
+        v-model="home"
+        :is-half-time="isHalfTime"
+        :max="
+          isHalfTime ? prediction.pronostic?.score?.fullTime?.home : undefined
+        "
+        @input="onInput"
+        @updated="onUpdated"
+      ></ScoreField>
 
       <span>🆚</span>
 
-      <ScoreField v-model="score.fullTime.away" @input="onInput"></ScoreField>
+      <ScoreField
+        v-model="away"
+        :is-half-time="isHalfTime"
+        :max="
+          isHalfTime ? prediction.pronostic?.score?.fullTime?.away : undefined
+        "
+        @input="onInput"
+        @updated="onUpdated"
+      ></ScoreField>
 
       <div class="is-flex is-flex-direction-column is-flex-grow-1">
         <p>{{ awayTeam.emoji }}</p>
@@ -35,21 +51,24 @@
 
         <template v-else>
           Une victoire de
-          <strong>{{ predictedWinnerFullTimeName }}</strong></template
-        >
+          <strong>{{ predictedWinnerFullTimeName }}</strong>
+          {{ isHalfTime ? 'à la mi-temps' : null }}
+        </template>
 
-        te rapportera <strong class="has-text-success">+10 points</strong>
+        te rapportera
+        <strong class="has-text-success">
+          {{ isHalfTime ? '+8 points' : '+10 points' }}
+        </strong>
       </p>
 
       <p>
-        Un score exact de
-        <strong>{{ predictedScoreFulltTime }}</strong> ajoutera un bonus de
-        <strong class="has-text-success">+8 points</strong> 🥳
-      </p>
-
-      <p class="mt-2">
-        Un pronostic erroné te fera gagner
-        <strong class="has-text-success">+1 point</strong>
+        Un pronostic erroné te fera
+        <template v-if="isHalfTime"
+          >perdre <strong class="has-text-danger">-2 points</strong></template
+        >
+        <template v-else
+          >gagner <strong class="has-text-success">+1 point</strong></template
+        >
       </p>
     </div>
   </div>
@@ -78,31 +97,35 @@ export default {
       required: false,
       default: () => ({}),
     },
+    isHalfTime: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
       counter: 0,
-      score: {
-        fullTime: { home: 0, away: 0 },
-      },
+      home: 0,
+      away: 0,
     }
   },
   computed: {
     predictedWinnerFullTime() {
-      if (this.score.fullTime.home === this.score.fullTime.away) return 'DRAW'
-      return Object.entries(this.score.fullTime).reduce((w, entry) => {
-        if (!w) return entry
-        else return w[1] > entry[1] ? w[0] : entry[0]
-      }, null)
+      if (this.home === this.away) return 'DRAW'
+      return Object.entries({ home: this.home, away: this.away }).reduce(
+        (w, entry) => {
+          if (!w) return entry
+          else return w[1] > entry[1] ? w[0] : entry[0]
+        },
+        null
+      )
     },
     predictedWinnerFullTimeName() {
       return {
         home: this.homeTeam.nameFr,
         away: this.awayTeam.nameFr,
       }[this.predictedWinnerFullTime]
-    },
-    predictedScoreFulltTime() {
-      return `${this.score.fullTime.home}-${this.score.fullTime.away}`
     },
   },
   watch: {
@@ -113,27 +136,26 @@ export default {
       },
     },
   },
-  mounted() {
+  created() {
     if (this.prediction.id) this.updateScore(this.prediction)
     this.onInput()
   },
   methods: {
     updateScore(newPrediction) {
-      const fields = [{ fullTime: ['home', 'away'] }]
-      fields.forEach((fieldSet) => {
-        Object.entries(fieldSet).forEach(([parent, keys]) => {
-          keys.forEach((key) =>
-            this.$set(
-              this.score[parent],
-              key,
-              newPrediction.pronostic.score[parent][key]
-            )
-          )
-        })
+      const source = this.isHalfTime
+        ? newPrediction.pronostic.score.halfTime
+        : newPrediction.pronostic.score.fullTime
+
+      if (!source) return
+      ;['home', 'away'].forEach((key) => {
+        this.$set(this, key, source[key])
       })
     },
     onInput() {
-      this.$emit('input', { score: { ...this.score } })
+      this.$emit('input', { home: this.home, away: this.away })
+    },
+    onUpdated() {
+      this.$emit('updated')
     },
   },
 }

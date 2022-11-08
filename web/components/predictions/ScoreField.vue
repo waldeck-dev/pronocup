@@ -1,10 +1,11 @@
 <template>
   <div class="mx-3 is-flex is-flex-direction-column is-align-items-center">
     <div
-      :style="{ cursor: value < max && !disabled ? 'pointer' : 'initial' }"
+      :style="{ cursor: canIncrease ? 'pointer' : 'initial' }"
       :class="{
-        'has-text-primary': value < max && !disabled,
-        'has-text-grey-lighter': value >= max || disabled,
+        'has-text-primary': canIncrease,
+        'has-text-grey-lighter': !canIncrease,
+        'is-small': isHalfTime,
       }"
       class="arrow has-text-centered has-text-primary"
       @click="increase"
@@ -13,17 +14,22 @@
     </div>
 
     <div
-      style="height: 72px"
-      class="score is-size-1 is-flex is-justify-content-center is-align-items-center"
+      :class="{
+        'is-size-1': !isHalfTime,
+        'is-size-3': isHalfTime,
+        'is-small': isHalfTime,
+      }"
+      class="score is-flex is-justify-content-center is-align-items-center"
     >
       {{ value }}
     </div>
 
     <div
-      :style="{ cursor: value > min && !disabled ? 'pointer' : 'initial' }"
+      :style="{ cursor: canDecrease ? 'pointer' : 'initial' }"
       :class="{
-        'has-text-primary': value > min && !disabled,
-        'has-text-grey-lighter': value <= min || disabled,
+        'has-text-primary': canDecrease,
+        'has-text-grey-lighter': !canDecrease,
+        'is-small': isHalfTime,
       }"
       class="arrow has-text-centered"
       @click="decrease"
@@ -57,21 +63,36 @@ export default {
       required: false,
       default: false,
     },
+    isHalfTime: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {}
   },
+  computed: {
+    canIncrease() {
+      const inc = this.value < this.max && !this.disabled
+      return this.isHalfTime ? inc : inc
+    },
+    canDecrease() {
+      return this.value > this.min && !this.disabled
+    },
+  },
   methods: {
     increase() {
-      if (this.value >= this.max || this.disabled) return
+      if (!this.canIncrease) return
       this.updateValue(this.value + 1)
     },
     decrease() {
-      if (this.value <= this.min || this.disabled) return
+      if (!this.canDecrease) return
       this.updateValue(this.value - 1)
     },
     updateValue(value) {
       this.$emit('input', value)
+      this.$emit('updated')
     },
   },
 }
@@ -86,9 +107,17 @@ export default {
   border: 1px solid lightgrey;
   border-radius: 1rem;
 }
+.score.is-small {
+  height: 64px;
+  width: 40px;
+}
 .arrow {
   width: 48px;
   cursor: pointer;
   font-size: 1.25rem;
+}
+.arrow.is-small {
+  width: 40px;
+  font-size: 1.1rem;
 }
 </style>

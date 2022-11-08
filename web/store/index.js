@@ -56,7 +56,7 @@ const mutations = {
     } else {
       state.predictions.push(prediction)
     }
-  }
+  },
 }
 
 const actions = {}

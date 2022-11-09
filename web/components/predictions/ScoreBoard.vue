@@ -57,7 +57,16 @@
 
         te rapportera
         <strong class="has-text-success">
-          {{ isHalfTime ? '+8 points' : '+10 points' }}
+          {{ isHalfTime ? '+2 points' : '+5 points' }}
+        </strong>
+      </p>
+
+      <p>
+        Un score exact
+        <strong>{{ predictedScore }}</strong>
+        te donnera un bonus de
+        <strong class="has-text-success">
+          {{ isHalfTime ? '+3 points' : '+3 points' }}
         </strong>
       </p>
 
@@ -127,6 +136,9 @@ export default {
         away: this.awayTeam.nameFr,
       }[this.predictedWinnerFullTime]
     },
+    predictedScore() {
+      return `${this.home}-${this.away}`
+    }
   },
   watch: {
     prediction: {

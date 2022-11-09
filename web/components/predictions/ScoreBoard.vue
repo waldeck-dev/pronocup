@@ -79,7 +79,7 @@ import MatchData from '@/mixins/MatchData'
 import ScoreField from '@/components/predictions/ScoreField.vue'
 
 export default {
-  name: 'PredictionPage',
+  name: 'ScoreBoard',
   components: { ScoreField },
   mixins: [MatchData],
   props: {
@@ -145,6 +145,12 @@ export default {
       const source = this.isHalfTime
         ? newPrediction.pronostic.score.halfTime
         : newPrediction.pronostic.score.fullTime
+
+      if (!source && this.isHalfTime && (this.home || this.away)) {
+        // Reset haltTime prediction on checkbox unchecked
+        this.home = 0
+        this.away = 0
+      }
 
       if (!source) return
       ;['home', 'away'].forEach((key) => {

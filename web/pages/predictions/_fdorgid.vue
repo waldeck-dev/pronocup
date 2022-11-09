@@ -44,15 +44,19 @@
     ></ScoreBoard>
 
     <!-- Score Half-time -->
-    <h3 class="mt-6 prediction-title has-text-primary">Score à la mi-temps</h3>
+    <h3 class="mt-6 prediction-title has-text-primary">
+      <b-checkbox v-model="halfTimePredicted" @click.native="updateHalfTimePrediction"
+        >Score à la mi-temps</b-checkbox
+      >
+    </h3>
     <h4 class="optional has-text-primary is-size-7">(facultatif)</h4>
-    <div style="opacity: 0.5">
+    <div :style="{ opacity: halfTimePredicted ? 1 : 0.5 }">
       <ScoreBoard
         v-model="halfTime"
         :match="match"
         :prediction="prediction"
         is-half-time
-        @updated="submit"
+        @updated=";(halfTimePredicted = true), submit(true)"
       ></ScoreBoard>
     </div>
   </div>
@@ -75,6 +79,7 @@ export default {
     return {
       fullTime: {},
       halfTime: {},
+      halfTimePredicted: false,
     }
   },
   async fetch() {
@@ -106,7 +111,7 @@ export default {
     nextMatch() {
       const m = this.getNextMatch(this.fdorgId)
       return m.fdorg_id ? m : null
-    }
+    },
   },
   watch: {
     '$fetchState.pending'() {
@@ -116,8 +121,25 @@ export default {
         }, 200)
       }
     },
+    halfTime: {
+      deep: true,
+      handler(newValue) {
+        if (newValue.home || newValue.away) {
+          this.halfTimePredicted = true
+        }
+      },
+    },
   },
   methods: {
+    updateHalfTimePrediction() {
+      if (!this.halfTimePredicted) {
+        this.submit(true)
+      } else {
+        this.halfTime.home = 0
+        this.halfTime.away = 0
+        this.submit(false)
+      }
+    },
     async submit(isHalfTime = false) {
       const payload = { score: { fullTime: this.fullTime } }
 
@@ -138,7 +160,7 @@ export default {
     },
     navigateToMatch(fdorgid) {
       this.$router.push({ name: 'predictions-fdorgid', params: { fdorgid } })
-    }
+    },
   },
 }
 </script>

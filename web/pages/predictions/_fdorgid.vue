@@ -10,6 +10,28 @@
       <p class="is-size-7">{{ matchDate }}</p>
     </b-message>
 
+    <div class="mb-4 is-flex is-justify-content-space-between">
+      <b-tooltip label="Match précédent" position="is-right">
+        <b-button
+          :disabled="!previousMatch"
+          type="is-primary is-light"
+          rounded
+          @click="navigateToMatch(previousMatch.fdorg_id)"
+          >⬅️</b-button
+        >
+      </b-tooltip>
+
+      <b-tooltip label="Match suivant" position="is-left">
+        <b-button
+          :disabled="!nextMatch"
+          type="is-primary is-light"
+          rounded
+          @click="navigateToMatch(nextMatch.fdorg_id)"
+          >➡️</b-button
+        >
+      </b-tooltip>
+    </div>
+
     <SectionTitle>Mon pronostic</SectionTitle>
 
     <!-- Score Full-Time -->
@@ -37,6 +59,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { apiError } from '@/components/helpers'
 import MatchList from '@/mixins/MatchList'
 import PredictionsList from '@/mixins/PredictionsList'
@@ -59,6 +82,7 @@ export default {
     await this.listPredictions()
   },
   computed: {
+    ...mapGetters(['getPrediction', 'getNextMatch', 'getPreviousMatch']),
     match() {
       return (
         this.$store.state.matches.find(
@@ -73,15 +97,23 @@ export default {
       }).format(new Date(this.match.data.utcDate))
     },
     prediction() {
-      return this.$store.getters.getPrediction(this.fdorgId)
+      return this.getPrediction(this.fdorgId)
     },
+    previousMatch() {
+      const m = this.getPreviousMatch(this.fdorgId)
+      return m.fdorg_id ? m : null
+    },
+    nextMatch() {
+      const m = this.getNextMatch(this.fdorgId)
+      return m.fdorg_id ? m : null
+    }
   },
   watch: {
     '$fetchState.pending'() {
       if (!this.$fetchState.pending && !this.prediction.id) {
         setTimeout(() => {
           this.submit()
-        }, 200);
+        }, 200)
       }
     },
   },
@@ -104,6 +136,9 @@ export default {
         })
         .catch((error) => apiError.bind(this)(error))
     },
+    navigateToMatch(fdorgid) {
+      this.$router.push({ name: 'predictions-fdorgid', params: { fdorgid } })
+    }
   },
 }
 </script>

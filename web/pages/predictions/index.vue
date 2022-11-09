@@ -2,7 +2,7 @@
   <div v-if="!$fetchState.pending">
     <SectionTitle>Pronostics</SectionTitle>
 
-    <section v-for="(matches, index) in classifiedMatched" :key="index">
+    <section v-for="(matches, index) in getSortedMatches" :key="index">
       <h2
         class="has-text-weight-bold mb-2"
         v-html="matches.length > 0 ? stages[matches[0].data.stage] : ''"
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import MatchList from '@/mixins/MatchList'
 import PredictionsList from '@/mixins/PredictionsList'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
@@ -27,37 +28,13 @@ export default {
   name: 'PredictionsPage',
   components: { SectionTitle, MatchCard },
   mixins: [MatchList, PredictionsList],
-  data() {
-    return {
-      stages: {
-        GROUP_STAGE: 'Phase de poule',
-        LAST_16: '8<sup>ème</sup> de finale',
-        QUARTER_FINALS: 'Quart de finale',
-        SEMI_FINALS: 'Demi-finale',
-        THIRD_PLACE: 'Petite finale',
-        FINAL: 'Final',
-      },
-    }
-  },
   async fetch() {
     await this.listMatches()
     await this.listPredictions()
   },
   computed: {
-    classifiedMatched() {
-      return Object.keys(this.stages).map((s) => {
-        return [...this.$store.state.matches]
-          .filter(
-            (m) =>
-              m.data.stage === s && m.data.homeTeam.id && m.data.awayTeam.id
-          )
-          .sort(
-            (a, b) =>
-              new Date(a.data.utcDate).getTime() -
-              new Date(b.data.utcDate).getTime()
-          )
-      })
-    },
+    ...mapState(['stages']),
+    ...mapGetters(['getSortedMatches']),
   },
 }
 </script>

@@ -5,6 +5,14 @@ const state = () => ({
   token: null,
   user: {},
   // Predictions
+  stages: {
+    GROUP_STAGE: 'Phase de poule',
+    LAST_16: '8<sup>ème</sup> de finale',
+    QUARTER_FINALS: 'Quart de finale',
+    SEMI_FINALS: 'Demi-finale',
+    THIRD_PLACE: 'Petite finale',
+    FINAL: 'Final',
+  },
   matches: [],
   predictions: [],
 })
@@ -21,6 +29,52 @@ const getters = {
         (p) => parseInt(p.match_id) === parseInt(matchId)
       ) ?? {}
     )
+  },
+  getSortedMatches: (state) => {
+    return Object.keys(state.stages).map((s) => {
+      return [...state.matches]
+        .filter(
+          (m) => m.data.stage === s && m.data.homeTeam.id && m.data.awayTeam.id
+        )
+        .sort(
+          (a, b) =>
+            new Date(a.data.utcDate).getTime() -
+            new Date(b.data.utcDate).getTime()
+        )
+    })
+  },
+  getMatchIndices: (_, getters) => (fdorgId) => {
+    let sIdx
+    let mIdx
+
+    for (let i = 0; i < getters.getSortedMatches.length; i++) {
+      const matches = getters.getSortedMatches[i]
+      mIdx = matches.findIndex(
+        (m) => parseInt(m.fdorg_id) === parseInt(fdorgId)
+      )
+      if (mIdx > -1) {
+        sIdx = i
+        break
+      }
+    }
+
+    return [sIdx, mIdx] // Stage index, match index
+  },
+  getOffsetMatch: (_, getters) => (fdorgId, offset) => {
+    const [sIdx, mIdx] = getters.getMatchIndices(fdorgId)
+    if (typeof sIdx !== 'number' || typeof mIdx !== 'number') return null
+
+    try {
+      return getters.getSortedMatches[sIdx][mIdx + offset]
+    } catch (error) {
+      return null
+    }
+  },
+  getNextMatch: (_, getters) => (fdorgId) => {
+    return getters.getOffsetMatch(fdorgId, 1) ?? {}
+  },
+  getPreviousMatch: (_, getters) => (fdorgId) => {
+    return getters.getOffsetMatch(fdorgId, -1) ?? {}
   },
 }
 

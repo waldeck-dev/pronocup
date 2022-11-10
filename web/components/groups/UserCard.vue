@@ -1,9 +1,7 @@
 <template>
   <b-field>
     <p class="control">
-      <b-button type="is-primary is-light" rounded expanded>
-        🏆
-      </b-button>
+      <b-button type="is-primary is-light" rounded expanded> 🏆 </b-button>
     </p>
 
     <p class="control is-flex-grow-1">
@@ -45,17 +43,17 @@ export default {
     },
     isConfirmed: {
       type: Boolean,
-      required: true
+      required: true,
     },
     isBlocked: {
       type: Boolean,
-      required: false
+      required: false,
     },
     isOwner: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
 }
 </script>

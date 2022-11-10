@@ -12,6 +12,14 @@ module.exports = {
       handler: 'match.find'
     },
     {
+      method: 'GET',
+      path: '/matches/processed',
+      handler: 'match.processed',
+      config: {
+        policies: ['global::is-worker']
+      }
+    },
+    {
       method: 'PUT',
       path: '/matches',
       handler: 'match.insert',

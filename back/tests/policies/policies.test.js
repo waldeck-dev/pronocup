@@ -212,9 +212,25 @@ describe('Test Match policy `match-is-valid`', () => {
 
     const fakeConfig = { getMatchId: jest.fn(() => fdorg_id) };
     const fakeRes = jest.fn(() => false);
-    const fakeContext = { response: { ctx: { notFound: fakeRes } } };
-    const res = await matchExists(fakeContext, fakeConfig, { strapi });
+    const res = await matchExists({}, fakeConfig, { strapi });
     expect(res).toBeTruthy();
+    expect(fakeRes.mock.calls.length).toBe(0);
+  });
+
+  test('match exists but has already been processed', async() => {
+    const fdorg_id = uuidv4();
+    await strapi.entityService.create('api::match.match', {
+      data: {
+        fdorg_id,
+        data: { utcDate: new Date('2100-01-01').toISOString() },
+        processed: true
+      }
+    });
+
+    const fakeConfig = { getMatchId: jest.fn(() => fdorg_id) };
+    const fakeRes = jest.fn(() => false);
+    const res = await matchExists({}, fakeConfig, { strapi });
+    expect(res).toBeFalsy();
     expect(fakeRes.mock.calls.length).toBe(0);
   });
 

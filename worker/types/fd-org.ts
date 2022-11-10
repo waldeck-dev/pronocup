@@ -23,6 +23,11 @@ export enum Team {
   AWAY = "awayTeam",
 }
 
+export enum PlayTime {
+  FullTime = "fullTime",
+  HalfTime = "halfTime",
+}
+
 interface ITeam {
   id: number | null;
   name: string | null;
@@ -39,8 +44,13 @@ interface IScoreDetails {
 interface IScore {
   winner: string | null;
   duration: string | null;
-  fullTime: IScoreDetails;
-  halfTime: IScoreDetails;
+  [PlayTime.FullTime]: IScoreDetails;
+  [PlayTime.HalfTime]: IScoreDetails;
+}
+
+export interface IGoal {
+  minute: number;
+  team: { id: number };
 }
 
 export interface IMatch {
@@ -53,6 +63,7 @@ export interface IMatch {
   homeTeam: ITeam;
   awayTeam: ITeam;
   score: IScore;
+  goals: IGoal[];
 }
 
 export interface ICountry {

@@ -1,6 +1,10 @@
 <template>
   <header class="container mb-5">
-    <h1 id="brand" class="has-text-centered has-text-primary is-size-1 my-5">
+    <h1
+      id="brand"
+      class="has-text-centered has-text-primary is-size-1 my-5"
+      @click="$router.push({ name: 'predictions' })"
+    >
       Pronocup
     </h1>
 

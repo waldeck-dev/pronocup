@@ -69,7 +69,7 @@ export default {
         username: null,
         identifier: 'pronocup1@yopmail.com',
         password: 'Valentin74!',
-        passwordConf: null
+        passwordConf: null,
       },
       allFields: [
         {
@@ -152,7 +152,7 @@ export default {
     onRegister(res) {
       isSuccess.bind(this)('Votre compte a été créé avec succès !')
       this.onLogin(res)
-    }
+    },
   },
 }
 </script>

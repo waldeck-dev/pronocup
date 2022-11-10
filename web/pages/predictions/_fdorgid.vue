@@ -45,7 +45,9 @@
 
     <!-- Score Half-time -->
     <h3 class="mt-6 prediction-title has-text-primary">
-      <b-checkbox v-model="halfTimePredicted" @click.native="updateHalfTimePrediction"
+      <b-checkbox
+        v-model="halfTimePredicted"
+        @click.native="updateHalfTimePrediction"
         >Score à la mi-temps</b-checkbox
       >
     </h3>

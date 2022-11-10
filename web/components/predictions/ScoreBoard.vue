@@ -138,7 +138,7 @@ export default {
     },
     predictedScore() {
       return `${this.home}-${this.away}`
-    }
+    },
   },
   watch: {
     prediction: {

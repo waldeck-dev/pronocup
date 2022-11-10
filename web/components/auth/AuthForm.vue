@@ -5,13 +5,17 @@
         v-for="field in fields"
         :key="field.label"
         :label="field.label"
+        :type="{ 'is-danger': $v.inputs[field.name].$error }"
+        :message="{
+          'Ce champ est obligatoire':
+            $v.inputs[field.name].$error && !$v.inputs[field.name].required,
+        }"
         label-position="on-border"
         class="pb-4"
       >
         <b-input
           v-model="inputs[field.name]"
           :placeholder="field.label"
-          :password-reveal="field.type === 'password'"
           :icon="field.icon"
           rounded
         ></b-input>
@@ -55,6 +59,7 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 import { isSuccess } from '@/components/helpers'
 
 export default {
@@ -67,8 +72,8 @@ export default {
       isLoading: false,
       inputs: {
         username: null,
-        identifier: 'pronocup1@yopmail.com',
-        password: 'Valentin74!',
+        identifier: null, // 'pronocup1@yopmail.com',
+        password: null, // 'Valentin74!',
         passwordConf: null,
       },
       allFields: [
@@ -93,13 +98,6 @@ export default {
           icon: 'lock',
           scopes: ['login', 'new', 'reset'],
         },
-        {
-          name: 'passwordConf',
-          type: 'password',
-          label: 'Confirmation mot de passe',
-          icon: 'lock-check',
-          scopes: ['new', 'reset'],
-        },
       ],
     }
   },
@@ -111,6 +109,13 @@ export default {
   methods: {
     async submit(scope) {
       this.isLoading = true
+
+      this.$v.$touch()
+      console.log('$v', this.$v)
+      if (this.$v.$error) {
+        this.isLoading = false
+        return
+      }
 
       const action = {
         login: {
@@ -153,6 +158,17 @@ export default {
       isSuccess.bind(this)('Votre compte a été créé avec succès !')
       this.onLogin(res)
     },
+  },
+  validations() {
+    const inputs = {}
+
+    this.allFields.forEach((f) => {
+      if (f.scopes.includes(this.scope)) {
+        inputs[f.name] = { required }
+      }
+    })
+
+    return { inputs }
   },
 }
 </script>

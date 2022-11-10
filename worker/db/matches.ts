@@ -4,6 +4,10 @@ import { getAuthHeaders as getBackHeaders } from "../db/back.ts";
 import { ICountry, IMatch, Team } from "../types/fd-org.ts";
 import Countries from "./countries.json" assert { type: "json" };
 
+/**
+ * DB & API relared code
+ */
+
 async function fetchMatches(competitionId: number) {
   const response = await fetch(
     `${Deno.env.get("FDORG_URL")}/competitions/${competitionId}/matches`,
@@ -60,6 +64,19 @@ export async function pushMatchesToApi(matches: IMatch[]) {
     },
   );
 }
+
+export async function getProcessedMatches() {
+  const res = await fetch(
+    `${Deno.env.get("STRAPI_URL")}/matches/processed`,
+    { headers: getBackHeaders() },
+  );
+
+  return res ? await res.json() : [];
+}
+
+/**
+ * UTILS
+ */
 
 export function toDate(dateString: string) {
   const date = new Date(dateString);
